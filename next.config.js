@@ -1,22 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   typescript: {
     ignoreBuildErrors: true
   },
   eslint: {
     ignoreDuringBuilds: true
   },
-  poweredByHeader: false,
-  compress: true,
-  generateBuildId: () => 'build',
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2
+  images: {
+    unoptimized: true
   },
-  swcMinify: true,
-  optimizeFonts: true,
-  reactStrictMode: true,
-  output: 'standalone'
+  trailingSlash: true
 }
 
 module.exports = nextConfig
