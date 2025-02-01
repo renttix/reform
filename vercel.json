@@ -1,18 +1,3 @@
 {
-  "version": 2,
-  "buildCommand": "cross-env NEXT_DISABLE_FILE_SYSTEM_API=1 NODE_OPTIONS='--max-old-space-size=4096' NEXT_DISABLE_MEMORY_WATCHER=1 NEXT_DISABLE_TELEMETRY=1 node scripts/custom-build.js",
-  "installCommand": "npm install",
-  "framework": null,
-  "outputDirectory": ".next",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "env": {
-    "NEXT_TELEMETRY_DISABLED": "1",
-    "NODE_ENV": "production",
-    "NEXT_DISABLE_FILE_SYSTEM_API": "1"
-  }
+  "version": 2
 }
