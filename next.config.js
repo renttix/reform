@@ -7,21 +7,12 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
   swcMinify: true,
-  output: 'standalone',
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  webpack: (config, { dev, isServer }) => {
-    // Avoid micromatch in production build
-    if (!dev && !isServer) {
-      config.optimization.minimize = true;
-      config.optimization.minimizer = [];
-    }
-    return config;
+  output: 'export',
+  images: {
+    unoptimized: true
   },
   experimental: {
-    optimizePackageImports: ['@heroicons/react', 'react-icons'],
-    turbotrace: {
-      logLevel: 'error'
-    }
+    optimizePackageImports: ['@heroicons/react', 'react-icons']
   }
 }
 
