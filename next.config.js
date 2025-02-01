@@ -1,13 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  images: {
-    unoptimized: true
-  },
   experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000', 'localhost:3001']
+    memoryBasedWorkersCount: true
+  },
+  webpack: (config) => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 300,
     }
+    return config
   }
 }
 
