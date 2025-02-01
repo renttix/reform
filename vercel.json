@@ -1,7 +1,3 @@
 {
-  "version": 2,
-  "env": {
-    "NEXT_PUBLIC_BASE_URL": "@next_public_base_url",
-    "NEXT_PUBLIC_GA_ID": "@next_public_ga_id"
-  }
+  "version": 2
 }
