@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  swcMinify: true,
-  reactStrictMode: true,
+  output: 'export',
   images: {
     unoptimized: true
-  }
+  },
+  trailingSlash: true,
+  distDir: '.next'
 }
 
 module.exports = nextConfig
