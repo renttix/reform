@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && rm -f scripts/patch-next.js && next build",
-    "start": "next start",
+    "build": "rm -rf .next out && next build",
+    "start": "npx serve out",
     "lint": "next lint"
   },
   "dependencies": {
