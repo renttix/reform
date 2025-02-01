@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'standalone',
   images: {
     unoptimized: true
   },
-  trailingSlash: true,
-  distDir: '.next'
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:3000', 'localhost:3001']
+    }
+  }
 }
 
 module.exports = nextConfig
