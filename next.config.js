@@ -9,8 +9,14 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
   experimental: {
-    optimizePackageImports: ['@heroicons/react', 'react-icons'],
-    serverMinification: true
+    optimizePackageImports: ['@heroicons/react', 'react-icons']
+  },
+  webpack: (config) => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 300
+    }
+    return config
   }
 }
 
