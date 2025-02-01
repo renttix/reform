@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cross-env NEXT_DISABLE_FILE_SYSTEM_API=1 node scripts/custom-build.js",
     "start": "next start",
     "lint": "next lint"
   },
@@ -19,6 +19,7 @@
     "@vercel/analytics": "^1.1.1",
     "autoprefixer": "10.4.16",
     "critters": "^0.0.23",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
