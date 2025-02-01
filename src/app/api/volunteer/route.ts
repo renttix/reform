@@ -2,6 +2,14 @@ import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
 export async function POST(request: Request) {
+  // Check if email service is configured
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
+    return NextResponse.json(
+      { message: 'Volunteer form submission is temporarily unavailable.' },
+      { status: 503 }
+    )
+  }
+
   try {
     const body = await request.json()
     const { name, email, phone, message, skills, availability } = body
