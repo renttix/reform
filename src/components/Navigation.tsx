@@ -59,14 +59,14 @@ export default function Navigation() {
             className="flex items-center space-x-6 group relative"
           >
             <div 
-              className="relative w-[220px] h-[70px]" 
+              className="relative w-28 h-28 flex items-center justify-center" 
               style={{ 
                 perspective: '2000px',
                 transformStyle: 'preserve-3d'
               }}
             >
               <div 
-                className="absolute inset-0"
+                className="absolute inset-0 flex items-center justify-center"
                 style={{ 
                   transformStyle: 'preserve-3d',
                   transform: 'translateZ(30px)'
@@ -75,13 +75,13 @@ export default function Navigation() {
                 <Image
                   src="/images/reformlogo.jpg"
                   alt="ReformUK Logo"
-                  width={220}
-                  height={220}
-                  className={`${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'} w-full h-full`}
+                  width={112}
+                  height={112}
+                  className={`${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
                   style={{ 
                     animationDuration: isRollInComplete ? '8s' : '3s',
                     objectFit: 'contain',
-                    width: 'auto',
+                    width: '100%',
                     height: '100%'
                   }}
                   priority
