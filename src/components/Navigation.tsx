@@ -72,20 +72,39 @@ export default function Navigation() {
                   transform: 'translateZ(30px)'
                 }}
               >
-                <Image
-                  src="/images/reformlogo.jpg"
-                  alt="ReformUK Logo"
-                  width={112}
-                  height={112}
-                  className={`${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
+                <div
+                  className={`w-full h-full ${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
                   style={{ 
-                    animationDuration: isRollInComplete ? '8s' : '3s',
-                    objectFit: 'contain',
-                    width: '100%',
-                    height: '100%'
+                    transformStyle: 'preserve-3d',
+                    animationDuration: isRollInComplete ? '8s' : '3s'
                   }}
-                  priority
-                />
+                >
+                  <Image
+                    src="/images/reformlogo.jpg"
+                    alt="ReformUK Logo"
+                    width={112}
+                    height={112}
+                    className="w-full h-full"
+                    style={{ 
+                      objectFit: 'contain',
+                      transform: 'rotateY(180deg)',
+                      backfaceVisibility: 'hidden'
+                    }}
+                    priority
+                  />
+                  <Image
+                    src="/images/reformlogo.jpg"
+                    alt="ReformUK Logo"
+                    width={112}
+                    height={112}
+                    className="w-full h-full absolute inset-0"
+                    style={{ 
+                      objectFit: 'contain',
+                      backfaceVisibility: 'hidden'
+                    }}
+                    priority
+                  />
+                </div>
               </div>
             </div>
             <div className="flex items-center space-x-2">
