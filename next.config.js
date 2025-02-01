@@ -8,15 +8,20 @@ const nextConfig = {
   },
   swcMinify: true,
   output: 'standalone',
-  experimental: {
-    optimizePackageImports: ['@heroicons/react', 'react-icons']
-  },
-  webpack: (config) => {
-    config.watchOptions = {
-      poll: 1000,
-      aggregateTimeout: 300
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  webpack: (config, { dev, isServer }) => {
+    // Avoid micromatch in production build
+    if (!dev && !isServer) {
+      config.optimization.minimize = true;
+      config.optimization.minimizer = [];
     }
-    return config
+    return config;
+  },
+  experimental: {
+    optimizePackageImports: ['@heroicons/react', 'react-icons'],
+    turbotrace: {
+      logLevel: 'error'
+    }
   }
 }
 
