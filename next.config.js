@@ -1,16 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
   typescript: {
     ignoreBuildErrors: true
   },
   eslint: {
     ignoreDuringBuilds: true
   },
-  images: {
-    unoptimized: true
-  },
-  trailingSlash: true
+  swcMinify: true,
+  output: 'standalone',
+  experimental: {
+    optimizePackageImports: ['@heroicons/react', 'react-icons'],
+    serverMinification: true
+  }
 }
 
 module.exports = nextConfig
