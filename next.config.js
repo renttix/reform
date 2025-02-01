@@ -5,6 +5,10 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true
+  },
+  experimental: {
+    disableMemoryWatcher: true,
+    disableTelemetry: true
   }
 }
 
