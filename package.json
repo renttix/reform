@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next out && next build && next export",
-    "start": "npx serve out -p 3000",
-    "preview": "npm run build && npm run start",
+    "build": "rm -rf .next && next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {

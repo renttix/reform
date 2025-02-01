@@ -1,6 +1,10 @@
 {
   "version": 2,
+  "framework": "nextjs",
   "buildCommand": "npm run build",
-  "outputDirectory": "out",
-  "framework": "nextjs"
+  "installCommand": "npm install --no-optional",
+  "env": {
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  }
 }

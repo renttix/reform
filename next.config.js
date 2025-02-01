@@ -7,12 +7,21 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
   swcMinify: true,
-  output: 'export',
-  images: {
-    unoptimized: true
-  },
+  output: 'standalone',
   experimental: {
     optimizePackageImports: ['@heroicons/react', 'react-icons']
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Avoid client-side trace collection
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: false,
+        minimize: false,
+        concatenateModules: false
+      };
+    }
+    return config;
   }
 }
 
