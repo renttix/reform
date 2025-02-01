@@ -31,8 +31,8 @@ module.exports = {
           '100%': { transform: 'translateX(0) rotateY(0deg)', opacity: '1' }
         },
         spin3d: {
-          '0%': { transform: 'perspective(2000px) rotateY(0deg) translateZ(30px)' },
-          '100%': { transform: 'perspective(2000px) rotateY(360deg) translateZ(30px)' }
+          '0%': { transform: 'rotateY(0deg)' },
+          '100%': { transform: 'rotateY(360deg)' }
         },
         expandWidth: {
           '0%': { transform: 'scaleX(0)' },
