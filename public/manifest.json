@@ -1,0 +1,109 @@
+{
+  "name": "Reform UK Erdington Branch",
+  "short_name": "Reform Erdington",
+  "description": "Reform UK Erdington Branch - Your local voice for positive change in the community. Join us in making real change across Erdington, Castle Vale, Pype Hayes, Stockland Green, and Kingstanding.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#00538C",
+  "orientation": "portrait-primary",
+  "dir": "ltr",
+  "lang": "en-GB",
+  "categories": ["politics", "community", "local government"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Home page of Reform UK Erdington"
+    },
+    {
+      "src": "/screenshots/events.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Events page showing upcoming community meetings"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Events",
+      "url": "/events",
+      "description": "View upcoming events and meetings"
+    },
+    {
+      "name": "Join",
+      "url": "/join",
+      "description": "Become a member of Reform UK Erdington"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact",
+      "description": "Get in touch with us"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "iarc_rating_id": "",
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

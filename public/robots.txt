@@ -1,0 +1,65 @@
+# robots.txt for Reform UK Erdington Branch
+
+User-agent: *
+Allow: /
+
+# Allow crawling of all content
+Allow: /about
+Allow: /news
+Allow: /events
+Allow: /contact
+Allow: /join
+Allow: /volunteer
+Allow: /plan/*
+Allow: /areas/*
+Allow: /privacy-policy
+
+# Sitemaps
+Sitemap: https://erdington.reform.uk/sitemap.xml
+
+# Crawl-delay to prevent server overload
+Crawl-delay: 1
+
+# Prevent crawling of API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*/_next/
+Disallow: /static/
+
+# Prevent crawling of development/staging environments
+Disallow: /dev/
+Disallow: /staging/
+Disallow: /test/
+
+# Allow crawling of static assets
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.png$
+Allow: /*.svg$
+Allow: /*.ico$
+Allow: /images/
+Allow: /public/
+
+# Rate limiting instructions for specific bots
+User-agent: AhrefsBot
+Crawl-delay: 5
+
+User-agent: Googlebot
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.png$
+Allow: /*.svg$
+
+User-agent: Bingbot
+Crawl-delay: 2
+
+# Host directive to specify preferred domain
+Host: erdington.reform.uk
