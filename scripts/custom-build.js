@@ -40,10 +40,7 @@ try {
     env: {
       ...process.env,
       NEXT_TELEMETRY_DISABLED: '1',
-      NODE_ENV: 'production',
-      // Disable features that might trigger micromatch
-      NEXT_MEMORY_WATCHER: 'true',
-      NEXT_TELEMETRY_CONTROL: 'true'
+      NODE_ENV: 'production'
     }
   });
   
