@@ -17,7 +17,7 @@ const nextConfig = {
       config.optimization = {
         ...config.optimization,
         splitChunks: false,
-        minimize: false,
+        minimize: true,
         concatenateModules: false
       };
     }

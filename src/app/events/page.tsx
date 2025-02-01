@@ -63,7 +63,7 @@ export default function EventsPage() {
               <p>
                 Reform UK Erdington hosts regular community meetings and events across the constituency. 
                 Our events are open to all residents interested in local politics and community development. 
-                Whether you're concerned about local issues, want to meet your Reform UK representatives, 
+Whether you're concerned about local issues, want to meet your Reform UK representatives,
                 or simply want to learn more about our vision for Erdington, you're welcome to join us.
               </p>
               <p>
