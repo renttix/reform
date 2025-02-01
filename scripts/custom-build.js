@@ -42,8 +42,8 @@ try {
       NEXT_TELEMETRY_DISABLED: '1',
       NODE_ENV: 'production',
       // Disable features that might trigger micromatch
-      __NEXT_DISABLE_MEMORY_WATCHER: 'true',
-      __NEXT_DISABLE_TELEMETRY: 'true'
+      NEXT_DISABLE_MEMORY_WATCHER: 'true',
+      NEXT_DISABLE_TELEMETRY: 'true'
     }
   });
   
