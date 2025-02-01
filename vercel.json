@@ -13,6 +13,8 @@
   "env": {
     "NEXT_TELEMETRY_DISABLED": "1",
     "NODE_ENV": "production",
+    "NEXT_MEMORY_WATCHER": "true",
+    "NEXT_TELEMETRY_CONTROL": "true",
     "NEXT_DISABLE_FILE_SYSTEM_API": "1"
   }
 }
