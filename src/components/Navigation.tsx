@@ -76,11 +76,13 @@ export default function Navigation() {
                   src="/images/reformlogo.jpg"
                   alt="ReformUK Logo"
                   width={220}
-                  height={70}
-                  className={`${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
+                  height={220}
+                  className={`${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'} w-full h-full`}
                   style={{ 
                     animationDuration: isRollInComplete ? '8s' : '3s',
-                    objectFit: 'contain'
+                    objectFit: 'contain',
+                    width: 'auto',
+                    height: '100%'
                   }}
                   priority
                 />
