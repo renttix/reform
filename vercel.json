@@ -2,14 +2,6 @@
   "version": 2,
   "env": {
     "NEXT_PUBLIC_BASE_URL": "@next_public_base_url",
-    "NEXT_PUBLIC_GA_ID": "@next_public_ga_id",
-    "MAILCHIMP_API_KEY": "@mailchimp_api_key",
-    "MAILCHIMP_LIST_ID": "@mailchimp_list_id",
-    "MAILCHIMP_API_SERVER": "@mailchimp_api_server",
-    "SMTP_HOST": "@smtp_host",
-    "SMTP_PORT": "@smtp_port",
-    "SMTP_USER": "@smtp_user",
-    "SMTP_PASSWORD": "@smtp_password",
-    "SMTP_FROM": "@smtp_from"
+    "NEXT_PUBLIC_GA_ID": "@next_public_ga_id"
   }
 }
