@@ -5,6 +5,7 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import Providers from '@/components/Providers'
 import Script from 'next/script'
+import ScrollingBackground from '@/components/ScrollingBackground'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -124,6 +125,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <ScrollingBackground />
         <Providers>
           <Navigation />
           <main id="main-content">{children}</main>
