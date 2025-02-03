@@ -11,6 +11,7 @@ export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isPlanOpen, setIsPlanOpen] = useState(false)
   const [isAreasOpen, setIsAreasOpen] = useState(false)
+  const [isNewsOpen, setIsNewsOpen] = useState(false)
   const [isRollInComplete, setIsRollInComplete] = useState(false)
   const { theme, setTheme } = useTheme()
 
@@ -32,6 +33,9 @@ export default function Navigation() {
       if (!target.closest('.areas-dropdown')) {
         setIsAreasOpen(false);
       }
+      if (!target.closest('.news-dropdown')) {
+        setIsNewsOpen(false);
+      }
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -44,6 +48,12 @@ export default function Navigation() {
     { href: '/areas/pype-hayes', text: 'Pype Hayes' },
     { href: '/areas/stockland-green', text: 'Stockland Green' },
     { href: '/areas/kingstanding', text: 'Kingstanding' }
+  ]
+
+  const newsItems = [
+    { href: '/news/national', text: 'National News' },
+    { href: '/news/local', text: 'Local News' },
+    { href: '/news/legal', text: 'Legal News' }
   ]
 
   if (!mounted) {
@@ -218,6 +228,49 @@ export default function Navigation() {
                 ))}
               </div>
             </div>
+
+            <div className="relative group news-dropdown">
+              <button 
+                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
+                onClick={() => setIsNewsOpen(!isNewsOpen)}
+              >
+                News
+                <svg
+                  className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${isNewsOpen ? 'rotate-180' : ''}`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+              </button>
+              <div 
+                className={`${
+                  isNewsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+                } absolute right-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+              >
+                {newsItems.map((item, index) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`block px-6 py-3.5 text-base text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-all duration-200 ${
+                      index === 0 ? 'rounded-t-xl' : ''
+                    } ${
+                      index === newsItems.length - 1 ? 'rounded-b-xl' : ''
+                    }`}
+                    onClick={() => setIsNewsOpen(false)}
+                  >
+                    {item.text}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             <Link href="/contact" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
               Contact
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
@@ -332,6 +385,22 @@ export default function Navigation() {
                   { href: '/plan/fight-crime', text: 'Fight Crime' },
                   { href: '/plan/drive-growth', text: 'Drive Growth' }
                 ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-3.5 px-3 text-base rounded-lg transition-all duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.text}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="px-4 py-2">
+              <div className="text-reform-dark dark:text-white text-base font-medium mb-1">News</div>
+              <div className="space-y-1 pl-4">
+                {newsItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
