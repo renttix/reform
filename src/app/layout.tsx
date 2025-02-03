@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import Providers from '@/components/Providers'
 import Script from 'next/script'
 import ScrollingBackground from '@/components/ScrollingBackground'
+import { generateOrganizationSchema } from '@/utils/structuredData'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -116,6 +117,8 @@ export default function RootLayout({
       lang="en" 
       suppressHydrationWarning
       className="scroll-smooth"
+      itemScope
+      itemType="https://schema.org/WebPage"
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -123,21 +126,39 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" type="image/png" href="/favicon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateOrganizationSchema())
+          }}
+        />
       </head>
       <body className={`${inter.className} antialiased`}>
         <ScrollingBackground />
         <Providers>
           <Navigation />
-          <main id="main-content">{children}</main>
+          <main id="main-content" role="main" itemProp="mainContentOfPage">{children}</main>
           <Footer />
         </Providers>
         
         {/* Analytics Script - Only in production */}
         {process.env.NODE_ENV === 'production' && (
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-            strategy="afterInteractive"
-          />
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
         )}
       </body>
     </html>
