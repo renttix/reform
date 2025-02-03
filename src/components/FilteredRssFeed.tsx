@@ -8,6 +8,8 @@ interface FeedItem {
   pubDate: string
   content?: string
   contentSnippet?: string
+  description?: string
+  categories?: string[]
 }
 
 interface FilteredRssFeedProps {
@@ -28,17 +30,41 @@ export default function FilteredRssFeed({ feedUrl, title, areaFilters }: Filtere
         if (!response.ok) throw new Error('Failed to fetch feed')
         const feed = await response.json()
         
-        // Filter items that mention any of the specified areas
+        console.log('Raw feed data:', feed)
+        
+        if (!feed.items || !Array.isArray(feed.items)) {
+          throw new Error('Invalid feed format')
+        }
+
+        // Normalize and filter items
         const filteredItems = feed.items.filter((item: FeedItem) => {
-          const content = `${item.title} ${item.contentSnippet}`.toLowerCase()
-          return areaFilters.some(area => 
-            content.includes(area.toLowerCase())
-          )
+          // Combine all text fields for searching
+          const searchText = [
+            item.title,
+            item.contentSnippet,
+            item.content,
+            item.description,
+            ...(item.categories || [])
+          ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase()
+
+          // Check if any area name is mentioned
+          return areaFilters.some(area => {
+            const areaLower = area.toLowerCase()
+            // Check for exact match or word boundary match
+            return searchText.includes(areaLower) ||
+                   searchText.includes(area.replace(' ', '-').toLowerCase()) ||
+                   new RegExp(`\\b${areaLower}\\b`).test(searchText)
+          })
         })
 
-        setFeedItems(filteredItems as FeedItem[])
+        console.log('Filtered items:', filteredItems)
+        setFeedItems(filteredItems)
         setLoading(false)
       } catch (err) {
+        console.error('Feed error:', err)
         setError('Failed to load feed. Please try again later.')
         setLoading(false)
       }
@@ -93,9 +119,9 @@ export default function FilteredRssFeed({ feedUrl, title, areaFilters }: Filtere
                 {item.title}
               </a>
             </h3>
-            {item.contentSnippet && (
+            {(item.contentSnippet || item.description) && (
               <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                {item.contentSnippet}
+                {item.contentSnippet || item.description}
               </p>
             )}
             <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">

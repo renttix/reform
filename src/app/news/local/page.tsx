@@ -11,7 +11,10 @@ const localAreas = [
   'Castle Vale',
   'Pype Hayes',
   'Stockland Green',
-  'Kingstanding'
+  'Kingstanding',
+  'North Birmingham',
+  'Perry Common',
+  'Short Heath'
 ]
 
 export default function LocalNews() {
@@ -46,7 +49,7 @@ export default function LocalNews() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <FilteredRssFeed 
-              feedUrl="https://www.birminghammail.co.uk/?service=rss"
+              feedUrl="https://www.birminghammail.co.uk/news/?service=rss"
               title="Latest Local News"
               areaFilters={localAreas}
             />
