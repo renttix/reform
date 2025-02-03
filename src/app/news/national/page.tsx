@@ -26,11 +26,17 @@ export default function NationalNews() {
       {/* News Feed Section */}
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <RssFeed 
-              feedUrl="https://feeds.feedburner.com/guidofawkes"
-              title="Latest National News"
-            />
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8">
+              <RssFeed 
+                feedUrl="https://feeds.feedburner.com/guidofawkes"
+                title="Guido Fawkes"
+              />
+              <RssFeed 
+                feedUrl="https://www.gbnews.com/feeds/politics.rss"
+                title="GB News Politics"
+              />
+            </div>
           </div>
         </div>
       </section>
