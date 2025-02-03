@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-4">Reform UK Erdington Branch</h3>
             <p className="text-white/90 dark:text-white/80 leading-relaxed">
-              Promoted by ReformUK Erdington Ward,<br />
+              Promoted by J Lambert,<br />
               Reform UK, 124 City Road,<br />
               London, EC1V 2NX
             </p>

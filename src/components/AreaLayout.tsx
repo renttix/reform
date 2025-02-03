@@ -60,10 +60,10 @@ export default function AreaLayout({
         />
         <div className="relative z-20 container mx-auto px-4 py-20">
           <div className="max-w-4xl">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-8 leading-tight">
               {title}
             </h1>
-            <p className="text-xl md:text-2xl lg:text-3xl font-light leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light leading-relaxed">
               {summary}
             </p>
           </div>
@@ -71,22 +71,22 @@ export default function AreaLayout({
       </section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Challenges Section */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-reform-dark dark:text-white mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-reform-dark dark:text-white mb-4 sm:mb-6">
                 Local Challenges
               </h2>
               <div className="space-y-6">
                 {challenges.map((challenge, index) => (
-                  <div key={index} className="bg-reform-gray/5 dark:bg-reform-secondary/5 p-6 rounded-xl">
-                    <h3 className="text-xl font-semibold text-reform-dark dark:text-white mb-3">
+                  <div key={index} className="bg-reform-gray/5 dark:bg-reform-secondary/5 p-4 sm:p-6 rounded-xl">
+                    <h3 className="text-lg sm:text-xl font-semibold text-reform-dark dark:text-white mb-2 sm:mb-3">
                       {challenge.title}
                     </h3>
-                    <p className="text-reform-dark/80 dark:text-white/80">
+                    <p className="text-sm sm:text-base text-reform-dark/80 dark:text-white/80">
                       {challenge.description}
                     </p>
                   </div>
@@ -96,16 +96,16 @@ export default function AreaLayout({
 
             {/* Solutions Section */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-reform-dark dark:text-white mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-reform-dark dark:text-white mb-4 sm:mb-6">
                 Our Solutions
               </h2>
               <div className="space-y-6">
                 {solutions.map((solution, index) => (
-                  <div key={index} className="bg-white dark:bg-reform-dark border border-reform-primary/10 dark:border-white/10 p-6 rounded-xl">
-                    <h3 className="text-xl font-semibold text-reform-primary dark:text-reform-light mb-3">
+                  <div key={index} className="bg-white dark:bg-reform-dark border border-reform-primary/10 dark:border-white/10 p-4 sm:p-6 rounded-xl">
+                    <h3 className="text-lg sm:text-xl font-semibold text-reform-primary dark:text-reform-light mb-2 sm:mb-3">
                       {solution.title}
                     </h3>
-                    <p className="text-reform-dark/80 dark:text-white/80 mb-4">
+                    <p className="text-sm sm:text-base text-reform-dark/80 dark:text-white/80 mb-3 sm:mb-4">
                       {solution.description}
                     </p>
                     <div className="bg-reform-primary/5 dark:bg-reform-light/5 p-4 rounded-lg">
@@ -120,7 +120,7 @@ export default function AreaLayout({
 
             {/* References Section */}
             <section className="mb-12">
-              <h2 className="text-2xl font-bold text-reform-dark dark:text-white mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-reform-dark dark:text-white mb-3 sm:mb-4">
                 References
               </h2>
               <div className="space-y-2">
@@ -143,8 +143,8 @@ export default function AreaLayout({
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Statistics Card */}
-            <div className="bg-white dark:bg-reform-dark border border-reform-primary/10 dark:border-white/10 rounded-xl p-6 mb-8">
-              <h3 className="text-xl font-bold text-reform-dark dark:text-white mb-4">
+            <div className="bg-white dark:bg-reform-dark border border-reform-primary/10 dark:border-white/10 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
+              <h3 className="text-lg sm:text-xl font-bold text-reform-dark dark:text-white mb-3 sm:mb-4">
                 Local Statistics
               </h3>
               <div className="space-y-4">
@@ -168,7 +168,7 @@ export default function AreaLayout({
             <div className="space-y-4">
               <Link
                 href="/join"
-                className="block w-full bg-reform-primary hover:bg-reform-primary/90 text-white font-medium py-3 px-6 rounded-xl text-center transition-all duration-300 hover:-translate-y-0.5"
+                className="block w-full bg-reform-primary hover:bg-reform-primary/90 text-white font-medium py-3 px-6 rounded-xl text-center transition-all duration-300 hover:-translate-y-0.5 text-sm sm:text-base"
               >
                 Join Reform UK Today
               </Link>
@@ -176,7 +176,7 @@ export default function AreaLayout({
                 href="https://www.facebook.com/groups/916932353577131"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 w-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 hover:-translate-y-0.5"
+                className="flex items-center justify-center space-x-2 w-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 hover:-translate-y-0.5 text-sm sm:text-base"
               >
                 <FaFacebook className="h-5 w-5" />
                 <span>Join Our Facebook Group</span>

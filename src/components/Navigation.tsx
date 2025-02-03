@@ -53,13 +53,13 @@ export default function Navigation() {
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-reform-primary/10 dark:border-white/10">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-28">
+        <div className="flex justify-between items-center h-16 md:h-28">
           <Link 
             href="/" 
             className="flex items-center space-x-6 group relative"
           >
             <div 
-              className="relative w-28 h-28 flex items-center justify-center" 
+              className="relative w-16 h-16 md:w-28 md:h-28 flex items-center justify-center" 
               style={{ 
                 perspective: '2000px',
                 transformStyle: 'preserve-3d'
@@ -107,7 +107,7 @@ export default function Navigation() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="hidden md:flex items-center space-x-2">
               <span className="text-reform-primary text-3xl font-bold">ReformUK</span>
               <span className="text-reform-dark dark:text-white text-3xl font-bold">Erdington</span>
               <span className="text-reform-secondary text-3xl font-bold">Branch</span>
@@ -252,17 +252,17 @@ export default function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-3">
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
+              className="p-2.5 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? '🌞' : '🌙'}
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10"
+              className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2.5 rounded-lg bg-reform-primary/10 dark:bg-reform-primary/20 hover:bg-reform-primary/20 dark:hover:bg-reform-primary/30"
               aria-label="Toggle mobile menu"
             >
               <svg
@@ -288,9 +288,9 @@ export default function Navigation() {
         <div
           className={`${
             isMobileMenuOpen ? 'max-h-[32rem] opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4'
-          } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark rounded-xl mt-2 border border-reform-primary/10 dark:border-white/10`}
+          } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark rounded-xl mt-2 border border-reform-primary/10 dark:border-white/10 shadow-lg`}
         >
-          <div className="py-4 space-y-1 border-t border-reform-primary/10 dark:border-white/10 px-2">
+          <div className="py-2 space-y-0.5 border-t border-reform-primary/10 dark:border-white/10 px-2">
             {[
               { href: '/join', text: 'Join' },
               { href: '/about', text: 'About' },
@@ -299,21 +299,21 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+                className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-4 text-base font-medium rounded-lg transition-all duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.text}
               </Link>
             ))}
             
-            <div className="px-4 py-3">
-              <div className="text-reform-dark dark:text-white text-base font-medium mb-2">Areas</div>
+            <div className="px-4 py-2">
+              <div className="text-reform-dark dark:text-white text-base font-medium mb-1">Areas</div>
               <div className="space-y-1 pl-4">
                 {areas.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-3.5 px-3 text-base rounded-lg transition-all duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.text}
@@ -322,8 +322,8 @@ export default function Navigation() {
               </div>
             </div>
 
-            <div className="px-4 py-3">
-              <div className="text-reform-dark dark:text-white text-base font-medium mb-2">Our Plan</div>
+            <div className="px-4 py-2">
+              <div className="text-reform-dark dark:text-white text-base font-medium mb-1">Our Plan</div>
               <div className="space-y-1 pl-4">
                 {[
                   { href: '/plan/cut-taxes', text: 'Cut Taxes' },
@@ -335,7 +335,7 @@ export default function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-3.5 px-3 text-base rounded-lg transition-all duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.text}
@@ -346,13 +346,13 @@ export default function Navigation() {
 
             <Link
               href="/contact"
-              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-4 text-base font-medium rounded-lg transition-all duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact
             </Link>
 
-            <div className="flex space-x-6 px-4 py-4 border-t border-reform-primary/10 dark:border-white/10 mt-2">
+            <div className="flex items-center justify-center space-x-8 px-4 py-6 border-t border-reform-primary/10 dark:border-white/10 mt-2 bg-reform-gray/5 dark:bg-reform-secondary/5">
               <a
                 href="https://www.facebook.com/groups/916932353577131"
                 target="_blank"
