@@ -4,7 +4,7 @@ import { getContent } from '@/utils/content'
 import NewsletterSignup from '@/components/NewsletterSignup'
 import SocialFeed from '@/components/SocialFeed'
 import type { Metadata } from 'next'
-import { FaFacebook } from 'react-icons/fa'
+import { FaFacebook, FaXTwitter } from 'react-icons/fa6'
 
 export const metadata: Metadata = {
   title: 'Reform UK Erdington Branch | Your Local Voice for Change',
@@ -50,7 +50,7 @@ export default function Home() {
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light leading-relaxed mb-8 md:mb-12">
               We're committed to cutting taxes, reducing net migration to zero, protecting our NHS, and bringing common sense back to local governance. Together, we can build stronger, more prosperous communities where your voice matters and your vote counts.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Link
                 href="/join"
                 className="btn bg-white text-reform-primary dark:bg-reform-dark dark:text-white hover:bg-reform-light dark:hover:bg-reform-secondary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:scale-105 relative overflow-hidden group w-full sm:w-auto text-center"
@@ -74,6 +74,18 @@ export default function Home() {
                 <span className="relative z-10 inline-flex items-center justify-center w-full">
                   <FaFacebook className="h-5 w-5" />
                   <span className="ml-2">Facebook Group</span>
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </a>
+              <a
+                href="https://x.com/ReformErdington"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn border-2 border-white text-white hover:border-reform-light hover:text-reform-light text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:scale-105 relative overflow-hidden group w-full sm:w-auto text-center"
+              >
+                <span className="relative z-10 inline-flex items-center justify-center w-full">
+                  <FaXTwitter className="h-5 w-5" />
+                  <span className="ml-2">Follow on X</span>
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </a>
