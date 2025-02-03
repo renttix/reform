@@ -2,74 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes shine {
-  0% {
-    transform: translateX(-100%) skewX(-15deg);
-  }
-  100% {
-    transform: translateX(200%) skewX(-15deg);
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
-@keyframes rollIn {
-  0% {
-    transform: translateX(-100%) rotate(-120deg);
+@keyframes fade-in {
+  from {
     opacity: 0;
   }
-  100% {
-    transform: translateX(0) rotate(0deg);
+  to {
     opacity: 1;
   }
 }
 
-@keyframes spin3d {
-  0% {
-    transform: perspective(800px) rotateY(0) translateX(-120px);
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    transform: perspective(800px) rotateY(180deg) translateX(120px);
-  }
-  100% {
-    transform: perspective(800px) rotateY(360deg) translateX(-120px);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.animate-shine {
-  position: relative;
-  overflow: hidden;
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
 }
 
-.animate-shine::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base styles */
+body {
+  color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  animation: shine 2s infinite;
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
 
-.animate-rollIn {
-  animation: rollIn 3s ease-out forwards;
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s ease-out;
 }
 
-.animate-spin3d {
-  animation: spin3d 8s linear infinite;
+.hover-lift:hover {
+  transform: translateY(-4px);
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Custom shadows */
+.shadow-glow {
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.2);
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+.shadow-glow:hover {
+  box-shadow: 0 0 35px rgba(0, 123, 255, 0.3);
+}
+
+/* Custom transitions */
+.transition-all-ease {
+  transition: all 0.3s ease-out;
 }
