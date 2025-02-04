@@ -59,7 +59,7 @@ export default function EventsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="sr-only">About Our Events</h2>
-            <div className="prose dark:prose-invert max-w-none">
+            <div className="prose dark:prose-invert max-w-none prose-headings:text-reform-dark dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-li:text-gray-700 dark:prose-li:text-gray-300">
               <p>
                 Reform UK Erdington hosts regular community meetings and events across the constituency. 
                 Our events are open to all residents interested in local politics and community development. 
