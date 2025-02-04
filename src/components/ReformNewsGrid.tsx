@@ -16,6 +16,7 @@ interface NewsItem {
 export default function ReformNewsGrid() {
   const [newsItems, setNewsItems] = useState<NewsItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [imageErrors, setImageErrors] = useState<{[key: string]: boolean}>({})
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -35,6 +36,10 @@ export default function ReformNewsGrid() {
     const interval = setInterval(fetchNews, 5 * 60 * 1000)
     return () => clearInterval(interval)
   }, [])
+
+  const handleImageError = (link: string) => {
+    setImageErrors(prev => ({ ...prev, [link]: true }))
+  }
 
   if (isLoading) {
     return (
@@ -74,31 +79,32 @@ export default function ReformNewsGrid() {
           href={item.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-white dark:bg-reform-dark rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          className="bg-white dark:bg-reform-dark rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
         >
           <div className="relative h-48 bg-reform-gray/5 dark:bg-reform-dark/50">
-            {item.media ? (
+            {item.media && !imageErrors[item.link] ? (
               <Image
                 src={item.media}
                 alt={item.title}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                onError={() => handleImageError(item.link)}
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center bg-reform-primary/5 dark:bg-reform-dark/50">
                 <Image
                   src="/images/reformlogo.jpg"
                   alt="Reform UK Logo"
                   width={80}
                   height={80}
-                  className="opacity-20"
+                  className="opacity-20 transition-opacity duration-300 group-hover:opacity-30"
                 />
               </div>
             )}
           </div>
           <div className="p-6 space-y-4">
-            <h3 className="text-xl font-bold text-reform-dark dark:text-white line-clamp-2 hover:text-reform-primary dark:hover:text-reform-light transition-colors">
+            <h3 className="text-xl font-bold text-reform-dark dark:text-white line-clamp-2 group-hover:text-reform-primary dark:group-hover:text-reform-light transition-colors">
               {item.title}
             </h3>
             <p className="text-reform-dark/70 dark:text-white/70 line-clamp-3 text-sm">

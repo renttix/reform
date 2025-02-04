@@ -1,29 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true
+  images: {
+    domains: [
+      'static.independent.co.uk',
+      'i.guim.co.uk',
+      'www.telegraph.co.uk',
+      'ichef.bbci.co.uk',
+      'images.ctfassets.net',
+      'static.standard.co.uk',
+      'i2-prod.birminghammail.co.uk',
+      'i2-prod.mirror.co.uk',
+      'www.thesun.co.uk',
+      'i.dailymail.co.uk',
+      'cdn.images.express.co.uk',
+      'images.news.itv.com'
+    ],
   },
-  eslint: {
-    ignoreDuringBuilds: true
-  },
-  swcMinify: true,
-  output: 'standalone',
   experimental: {
-    optimizePackageImports: ['@heroicons/react', 'react-icons'],
-    serverMinification: true,
-    optimizeServerBuilds: true
+    serverActions: true,
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.optimization.splitChunks = false;
-    }
-    return config;
-  },
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  generateBuildId: () => 'build',
-  poweredByHeader: false,
-  compress: true,
-  reactStrictMode: true
 }
 
 module.exports = nextConfig
