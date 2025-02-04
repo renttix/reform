@@ -19,13 +19,11 @@ model NewsArticle {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Search index
   @@index([title])
   @@index([source])
   @@index([pubDate])
 }
 
-// Store search queries for analytics
 model SearchQuery {
   id        String   @id @default(cuid())
   query     String
@@ -36,7 +34,6 @@ model SearchQuery {
   @@index([query])
 }
 
-// Track article views
 model ArticleView {
   id          String   @id @default(cuid())
   articleId   String

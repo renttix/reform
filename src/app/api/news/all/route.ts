@@ -12,14 +12,52 @@ const parser = new Parser({
 
 // RSS feed URLs
 const RSS_FEEDS = [
+  // Major UK News Sources
   {
-    url: 'https://www.politics.co.uk/feed/',
-    source: 'Politics.co.uk'
+    url: 'https://feeds.bbci.co.uk/news/uk/rss.xml',
+    source: 'BBC News'
   },
   {
-    url: 'https://order-order.com/feed/',
-    source: 'Guido Fawkes'
+    url: 'https://feeds.bbci.co.uk/news/politics/rss.xml',
+    source: 'BBC Politics'
   },
+  {
+    url: 'https://www.itv.com/news/politics/rss',
+    source: 'ITV News Politics'
+  },
+  {
+    url: 'https://www.telegraph.co.uk/politics/rss.xml',
+    source: 'The Telegraph Politics'
+  },
+  {
+    url: 'https://www.theguardian.com/politics/rss',
+    source: 'The Guardian Politics'
+  },
+  {
+    url: 'https://www.independent.co.uk/news/uk/politics/rss',
+    source: 'The Independent Politics'
+  },
+  {
+    url: 'https://www.express.co.uk/news/politics/rss',
+    source: 'Daily Express Politics'
+  },
+  {
+    url: 'https://www.dailymail.co.uk/news/politics/index.rss',
+    source: 'Daily Mail Politics'
+  },
+  {
+    url: 'https://www.thesun.co.uk/news/politics/feed/',
+    source: 'The Sun Politics'
+  },
+  {
+    url: 'https://www.mirror.co.uk/news/politics/rss.xml',
+    source: 'Daily Mirror Politics'
+  },
+  {
+    url: 'https://www.standard.co.uk/news/politics/rss',
+    source: 'Evening Standard Politics'
+  },
+  // Local News
   {
     url: 'https://www.birminghammail.co.uk/news/local-news/rss.xml',
     source: 'Birmingham Mail'
@@ -35,30 +73,6 @@ const RSS_FEEDS = [
   {
     url: 'https://www.birminghamworld.uk/feed/rss',
     source: 'Birmingham World'
-  },
-  {
-    url: 'https://www.express.co.uk/posts/rss/1',
-    source: 'Daily Express'
-  },
-  {
-    url: 'https://www.telegraph.co.uk/rss.xml',
-    source: 'The Telegraph'
-  },
-  {
-    url: 'https://www.dailymail.co.uk/news/index.rss',
-    source: 'Daily Mail'
-  },
-  {
-    url: 'https://www.thesun.co.uk/feed/',
-    source: 'The Sun'
-  },
-  {
-    url: 'https://www.spectator.co.uk/feed.rss',
-    source: 'The Spectator'
-  },
-  {
-    url: 'https://www.conservativehome.com/feed',
-    source: 'Conservative Home'
   }
 ]
 

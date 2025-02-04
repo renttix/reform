@@ -52,9 +52,10 @@ export default function Navigation() {
   ]
 
   const newsItems = [
+    { href: '/news/reform', text: 'Reform UK News' },
     { href: '/news/national', text: 'National News' },
     { href: '/news/local', text: 'Local News' },
-    { href: '/news/legal', text: 'Legal News' }
+    { href: '/news/crime-and-court', text: 'Crime and Court' }
   ]
 
   if (!mounted) {

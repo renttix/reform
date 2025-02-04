@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import './styles.css'
 
 export const metadata: Metadata = {
-  title: 'Legal News | ReformUK Erdington',
-  description: 'Stay updated with the latest legal developments and updates affecting our community.',
+  title: 'Crime and Court News | ReformUK Erdington',
+  description: 'Latest crime and court news affecting our community and the United Kingdom.',
 }
 
-export default function LegalNews() {
+export default function CrimeAndCourtNews() {
   return (
     <div className="min-h-screen bg-reform-gray/5 dark:bg-gray-900">
       {/* Hero Section */}
@@ -15,10 +14,10 @@ export default function LegalNews() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-              Legal News
+              Crime and Court News
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl font-light">
-              Stay informed with the latest legal developments and updates affecting our community.
+              Stay informed about crime, justice, and court proceedings affecting our community.
             </p>
           </div>
         </div>

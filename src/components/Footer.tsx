@@ -71,7 +71,7 @@ export default function Footer() {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="https://reform.uk" className="text-gray-400 hover:text-reform-primary transition-colors">
+                <Link href="https://www.reformparty.uk" className="text-gray-400 hover:text-reform-primary transition-colors">
                   Reform UK National
                 </Link>
               </li>
