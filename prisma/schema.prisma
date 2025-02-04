@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  content     String?
+  link        String   @unique
+  source      String
+  imageUrl    String?
+  pubDate     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Search index
+  @@index([title])
+  @@index([source])
+  @@index([pubDate])
+}
+
+// Store search queries for analytics
+model SearchQuery {
+  id        String   @id @default(cuid())
+  query     String
+  count     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([query])
+}
+
+// Track article views
+model ArticleView {
+  id          String   @id @default(cuid())
+  articleId   String
+  viewedAt    DateTime @default(now())
+  userAgent   String?
+  referrer    String?
+
+  @@index([articleId])
+  @@index([viewedAt])
+}

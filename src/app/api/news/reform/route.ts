@@ -1,5 +1,7 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import Parser from 'rss-parser'
+import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 
 const parser = new Parser({
   customFields: {
@@ -79,33 +81,26 @@ const REFORM_KEYWORDS = [
   'Reform UK Brexit'
 ].map(keyword => keyword.toLowerCase())
 
-export async function GET() {
+async function fetchAndStoreNews() {
   try {
     // Fetch all feeds in parallel with timeout
     const feedPromises = RSS_FEEDS.map(async ({ url, source }) => {
       try {
-        const controller = new AbortController()
-        const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
-
         const feed = await parser.parseURL(url)
-        clearTimeout(timeoutId)
-
-        // Filter and map items
-        const reformItems = feed.items
+        return feed.items
           .filter(item => {
             const text = `${item.title} ${item.contentSnippet || item.description || ''}`.toLowerCase()
             return REFORM_KEYWORDS.some(keyword => text.includes(keyword))
           })
           .map(item => ({
-            ...item,
-            source,
+            title: item.title || '',
             description: item.contentSnippet || item.description || '',
+            content: item.content || '',
             link: item.link || '',
-            pubDate: item.pubDate || item.isoDate || new Date().toISOString(),
-            media: item.media?.$.url || item.enclosure?.url || null
+            source,
+            imageUrl: item.media?.$.url || item.enclosure?.url || null,
+            pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
           }))
-
-        return reformItems
       } catch (error) {
         console.error(`Error fetching ${source} feed:`, error)
         return []
@@ -113,23 +108,76 @@ export async function GET() {
     })
 
     const feedResults = await Promise.all(feedPromises)
-    
-    // Combine all items, sort by date, and deduplicate
-    const allItems = feedResults
-      .flat()
-      .sort((a, b) => {
-        const dateA = new Date(a.pubDate)
-        const dateB = new Date(b.pubDate)
-        return dateB.getTime() - dateA.getTime()
-      })
-      // Remove duplicates based on title
-      .filter((item, index, self) => 
-        index === self.findIndex((t) => t.title === item.title)
-      )
+    const allItems = feedResults.flat()
 
-    return NextResponse.json(allItems)
+    // Store articles in database
+    for (const item of allItems) {
+      await prisma.newsArticle.upsert({
+        where: { link: item.link },
+        update: item,
+        create: item,
+      })
+    }
+
+    return allItems
+  } catch (error) {
+    console.error('Error in fetchAndStoreNews:', error)
+    return []
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const search = searchParams.get('search') || ''
+    const sort = searchParams.get('sort') || 'desc'
+
+    // Store search query if provided
+    if (search) {
+      const searchQuery = await prisma.searchQuery.create({
+        data: {
+          query: search,
+        },
+      })
+    }
+
+    // Fetch and store latest news in background
+    fetchAndStoreNews().catch(console.error)
+
+    // Query articles with pagination and search
+    const where: Prisma.NewsArticleWhereInput = search ? {
+      OR: [
+        { title: { contains: search, mode: Prisma.QueryMode.insensitive } },
+        { description: { contains: search, mode: Prisma.QueryMode.insensitive } },
+      ],
+    } : {}
+
+    const [articles, total] = await Promise.all([
+      prisma.newsArticle.findMany({
+        where,
+        orderBy: { pubDate: sort === 'asc' ? 'asc' : 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.newsArticle.count({ where }),
+    ])
+
+    return NextResponse.json({
+      articles,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
   } catch (error) {
     console.error('Error in /api/news/reform:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    )
   }
 }
