@@ -87,12 +87,12 @@ export default function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-gray-200 dark:border-white/10 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20 md:h-28">
+        <div className="flex justify-between items-center h-20 lg:h-28">
           <Link 
             href="/" 
-            className="flex items-center space-x-2 md:space-x-6 group relative"
+            className="flex items-center space-x-2 lg:space-x-6 group relative"
           >
-            <div className="relative w-[40px] h-[40px] lg:w-[220px] lg:h-[70px] bg-white dark:bg-reform-dark rounded-lg">
+            <div className="relative w-[40px] h-[40px] lg:w-[70px] lg:h-[70px] bg-white dark:bg-reform-dark rounded-lg">
               <div 
                 className={`absolute inset-0 ${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
                 style={{ 
@@ -108,13 +108,13 @@ export default function Navigation() {
                   src="/images/reformlogo.jpg"
                   alt="ReformUK Logo"
                   fill
-                  sizes="220px"
+                  sizes="(max-width: 1024px) 40px, 70px"
                   className="object-contain"
                   priority
                 />
               </div>
             </div>
-            <div className="flex flex-col -space-y-1 lg:-space-y-3">
+            <div className="flex flex-col -space-y-1 lg:-space-y-2">
               <span className="text-lg lg:text-[2.5rem] leading-[0.9] font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">ReformUK</span>
               <span className="text-base lg:text-3xl font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">Erdington</span>
             </div>
@@ -266,25 +266,27 @@ export default function Navigation() {
                 <Link href="/news/crime-and-court" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Crime & Courts</Link>
               </div>
             </div>
-            <div className="flex items-center space-x-6 ml-8 border-l border-reform-primary/10 dark:border-white/10 pl-8">
-              <a
-                href="https://www.facebook.com/groups/916932353577131"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-300 hover:-translate-y-1 hover:scale-110"
-                aria-label="Facebook"
-              >
-                <FaFacebook className="h-6 w-6" />
-              </a>
-              <a
-                href="https://x.com/ReformErdington"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-300 hover:-translate-y-1 hover:scale-110"
-                aria-label="X (Twitter)"
-              >
-                <FaXTwitter className="h-6 w-6" />
-              </a>
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-6 border-l border-reform-primary/10 dark:border-white/10 pl-8">
+                <a
+                  href="https://www.facebook.com/groups/916932353577131"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  aria-label="Facebook"
+                >
+                  <FaFacebook className="h-6 w-6" />
+                </a>
+                <a
+                  href="https://x.com/ReformErdington"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  aria-label="X (Twitter)"
+                >
+                  <FaXTwitter className="h-6 w-6" />
+                </a>
+              </div>
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300 hover:-translate-y-1 hover:scale-110"
@@ -298,34 +300,34 @@ export default function Navigation() {
           {/* Mobile menu button */}
           <div className="flex items-center gap-2">
             <div className="lg:hidden flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
-              aria-label="Toggle theme"
-            >
-              {mounted && (currentTheme === 'dark' ? '🌞' : '🌙')}
-            </button>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10"
-              aria-label="Toggle mobile menu"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
+                aria-label="Toggle theme"
               >
-                {isMobileMenuOpen ? (
-                  <path d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
+                {mounted && (currentTheme === 'dark' ? '🌞' : '🌙')}
+              </button>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10"
+                aria-label="Toggle mobile menu"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  {isMobileMenuOpen ? (
+                    <path d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -470,7 +472,6 @@ export default function Navigation() {
                 ))}
               </div>
             </div>
-
 
             <div className="flex space-x-6 px-4 py-4 border-t border-reform-primary/10 dark:border-white/10 mt-2">
               <a
