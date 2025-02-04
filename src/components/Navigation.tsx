@@ -4,190 +4,137 @@ import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import { FaFacebook, FaXTwitter } from 'react-icons/fa6'
-import NewsTicker from './NewsTicker'
+import { FaFacebook } from 'react-icons/fa6'
+import { FaXTwitter } from 'react-icons/fa6'
 
 export default function Navigation() {
   const [mounted, setMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isPlanOpen, setIsPlanOpen] = useState(false)
-  const [isAreasOpen, setIsAreasOpen] = useState(false)
   const [isNewsOpen, setIsNewsOpen] = useState(false)
+  const [isAreasOpen, setIsAreasOpen] = useState(false)
   const [isRollInComplete, setIsRollInComplete] = useState(false)
+  const [mouthOpen, setMouthOpen] = useState(false)
   const { theme, setTheme } = useTheme()
+  const [currentTheme, setCurrentTheme] = useState<string>('light')
 
+  // Handle mounting and initial animations
   useEffect(() => {
     setMounted(true)
-    // Wait for rollIn animation to complete before starting spin3d
     const timer = setTimeout(() => {
       setIsRollInComplete(true)
-    }, 3000) // 3s matches the rollIn animation duration
+    }, 1500)
     return () => clearTimeout(timer)
   }, [])
+
+  // Handle mouth animation
+  useEffect(() => {
+    if (!mounted) return
+    const interval = setInterval(() => {
+      setMouthOpen(prev => !prev)
+    }, 200)
+    return () => clearInterval(interval)
+  }, [mounted])
+
+  // Handle theme changes
+  useEffect(() => {
+    if (!mounted) return
+    setCurrentTheme(theme || 'light')
+  }, [theme, mounted])
+
+  const toggleTheme = () => {
+    if (!mounted) return
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+    setCurrentTheme(newTheme)
+    setTheme(newTheme)
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (!target.closest('.plan-dropdown')) {
+      
+      // Check if click is outside all dropdowns
+      if (!target.closest('.dropdown-menu')) {
         setIsPlanOpen(false);
-      }
-      if (!target.closest('.areas-dropdown')) {
-        setIsAreasOpen(false);
-      }
-      if (!target.closest('.news-dropdown')) {
         setIsNewsOpen(false);
+        setIsAreasOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    // Handle escape key
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsPlanOpen(false);
+        setIsNewsOpen(false);
+        setIsAreasOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscKey);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscKey);
+    };
   }, []);
-
-  const areas = [
-    { href: '/areas/erdington', text: 'Erdington' },
-    { href: '/areas/castle-vale', text: 'Castle Vale' },
-    { href: '/areas/pype-hayes', text: 'Pype Hayes' },
-    { href: '/areas/stockland-green', text: 'Stockland Green' },
-    { href: '/areas/kingstanding', text: 'Kingstanding' }
-  ]
-
-  const newsItems = [
-    { href: '/news/reform', text: 'Reform UK News' },
-    { href: '/news/national', text: 'National News' },
-    { href: '/news/local', text: 'Local News' },
-    { href: '/news/crime-and-court', text: 'Crime and Court' }
-  ]
 
   if (!mounted) {
     return null
   }
 
   return (
-    <>
-      <nav className="sticky top-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-reform-primary/10 dark:border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-gray-200 dark:border-white/10 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16 md:h-28">
+        <div className="flex justify-between items-center h-28">
           <Link 
             href="/" 
             className="flex items-center space-x-6 group relative"
           >
-            <div 
-              className="relative w-16 h-16 md:w-28 md:h-28 flex items-center justify-center" 
-              style={{ 
-                perspective: '2000px',
-                transformStyle: 'preserve-3d'
-              }}
-            >
+            <div className="relative w-[220px] h-[70px] bg-white dark:bg-reform-dark rounded-lg">
               <div 
-                className="absolute inset-0 flex items-center justify-center"
+                className={`absolute inset-0 ${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
                 style={{ 
-                  transformStyle: 'preserve-3d',
-                  transform: 'translateZ(30px)'
+                  transformOrigin: 'center center',
+                  clipPath: mouthOpen ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(35% 0, 100% 0, 100% 100%, 35% 100%, 0 50%)',
+                  transition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: mouthOpen 
+                    ? 'rotate(0deg) scale(1)' 
+                    : 'rotate(-8deg) scale(0.95)',
                 }}
               >
-                <div
-                  className={`w-full h-full ${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
-                  style={{ 
-                    transformStyle: 'preserve-3d',
-                    animationDuration: isRollInComplete ? '8s' : '3s'
-                  }}
-                >
-                  <Image
-                    src="/images/reformlogo.jpg"
-                    alt="ReformUK Logo"
-                    width={112}
-                    height={112}
-                    className="w-full h-full"
-                    style={{ 
-                      objectFit: 'contain',
-                      transform: 'rotateY(180deg)',
-                      backfaceVisibility: 'hidden'
-                    }}
-                    priority
-                  />
-                  <Image
-                    src="/images/reformlogo.jpg"
-                    alt="ReformUK Logo"
-                    width={112}
-                    height={112}
-                    className="w-full h-full absolute inset-0"
-                    style={{ 
-                      objectFit: 'contain',
-                      backfaceVisibility: 'hidden'
-                    }}
-                    priority
-                  />
-                </div>
+                <Image
+                  src="/images/reformlogo.jpg"
+                  alt="ReformUK Logo"
+                  fill
+                  sizes="220px"
+                  className="object-contain"
+                  priority
+                />
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-2">
-              <span className="text-reform-primary text-3xl font-bold">ReformUK</span>
-              <span className="text-reform-dark dark:text-white text-3xl font-bold">Erdington</span>
-              <span className="text-reform-secondary text-3xl font-bold">Branch</span>
+            <div className="flex flex-col -space-y-3">
+              <span className="text-[2.5rem] leading-[0.9] font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">ReformUK</span>
+              <span className="text-3xl font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">Erdington</span>
             </div>
           </Link>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex items-center space-x-10">
+          <div className="hidden md:flex items-center space-x-8">
             <Link href="/join" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
               Join
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
             </Link>
-
-            <div className="relative group areas-dropdown">
+            <div className="relative group dropdown-menu">
               <button 
                 className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
-                onClick={() => setIsAreasOpen(!isAreasOpen)}
-              >
-                Areas
-                <svg
-                  className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${isAreasOpen ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-              </button>
-              <div 
-                className={`${
-                  isAreasOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute right-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
-              >
-                {areas.map((item, index) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`block px-6 py-3.5 text-base text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-all duration-200 ${
-                      index === 0 ? 'rounded-t-xl' : ''
-                    } ${
-                      index === areas.length - 1 ? 'rounded-b-xl' : ''
-                    }`}
-                    onClick={() => setIsAreasOpen(false)}
-                  >
-                    {item.text}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <Link href="/about" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
-              About
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href="/events" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
-              Events
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <div className="relative group plan-dropdown">
-              <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
-                onClick={() => setIsPlanOpen(!isPlanOpen)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsNewsOpen(false);
+                  setIsAreasOpen(false);
+                  setIsPlanOpen(!isPlanOpen);
+                }}
               >
                 Our Plan
                 <svg
@@ -207,7 +154,7 @@ export default function Navigation() {
               <div 
                 className={`${
                   isPlanOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute right-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+                } absolute left-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
               >
                 {[
                   { href: '/plan/cut-taxes', text: 'Cut Taxes' },
@@ -231,11 +178,66 @@ export default function Navigation() {
                 ))}
               </div>
             </div>
-
-            <div className="relative group news-dropdown">
+            <div className="relative group dropdown-menu">
               <button 
                 className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
-                onClick={() => setIsNewsOpen(!isNewsOpen)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsPlanOpen(false);
+                  setIsNewsOpen(false);
+                  setIsAreasOpen(!isAreasOpen);
+                }}
+              >
+                Areas
+                <svg
+                  className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${isAreasOpen ? 'rotate-180' : ''}`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+              </button>
+              <div 
+                className={`${
+                  isAreasOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+                } absolute left-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+              >
+                <Link href="/areas/erdington" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Erdington</Link>
+                <Link href="/areas/kingstanding" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Kingstanding</Link>
+                <Link href="/areas/stockland-green" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Stockland Green</Link>
+                <Link href="/areas/pype-hayes" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Pype Hayes</Link>
+                <Link href="/areas/castle-vale" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Castle Vale</Link>
+              </div>
+            </div>
+            <Link href="/reformtv" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+              ReformTV
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link href="/events" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+              Events
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link href="/about" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+              About
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <div className="relative group dropdown-menu">
+              <button 
+                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsPlanOpen(false);
+                  setIsAreasOpen(false);
+                  setIsNewsOpen(!isNewsOpen);
+                }}
               >
                 News
                 <svg
@@ -255,29 +257,14 @@ export default function Navigation() {
               <div 
                 className={`${
                   isNewsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute right-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+                } absolute right-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
               >
-                {newsItems.map((item, index) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`block px-6 py-3.5 text-base text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-all duration-200 ${
-                      index === 0 ? 'rounded-t-xl' : ''
-                    } ${
-                      index === newsItems.length - 1 ? 'rounded-b-xl' : ''
-                    }`}
-                    onClick={() => setIsNewsOpen(false)}
-                  >
-                    {item.text}
-                  </Link>
-                ))}
+                <Link href="/news/reform" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Reform News</Link>
+                <Link href="/news/national" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">National</Link>
+                <Link href="/news/local" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Local</Link>
+                <Link href="/news/crime-and-court" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Crime & Courts</Link>
               </div>
             </div>
-
-            <Link href="/contact" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
-              Contact
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-            </Link>
             <div className="flex items-center space-x-6 ml-8 border-l border-reform-primary/10 dark:border-white/10 pl-8">
               <a
                 href="https://www.facebook.com/groups/916932353577131"
@@ -298,27 +285,27 @@ export default function Navigation() {
                 <FaXTwitter className="h-6 w-6" />
               </a>
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={toggleTheme}
                 className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300 hover:-translate-y-1 hover:scale-110"
                 aria-label="Toggle theme"
               >
-                {theme === 'dark' ? '🌞' : '🌙'}
+                {mounted && (currentTheme === 'dark' ? '🌞' : '🌙')}
               </button>
             </div>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-3">
+          <div className="md:hidden flex items-center space-x-4">
             <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2.5 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? '🌞' : '🌙'}
+              {mounted && (currentTheme === 'dark' ? '🌞' : '🌙')}
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2.5 rounded-lg bg-reform-primary/10 dark:bg-reform-primary/20 hover:bg-reform-primary/20 dark:hover:bg-reform-primary/30"
+              className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10"
               aria-label="Toggle mobile menu"
             >
               <svg
@@ -344,42 +331,118 @@ export default function Navigation() {
         <div
           className={`${
             isMobileMenuOpen ? 'max-h-[32rem] opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4'
-          } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark rounded-xl mt-2 border border-reform-primary/10 dark:border-white/10 shadow-lg`}
+          } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark rounded-xl mt-2 border border-reform-primary/10 dark:border-white/10`}
         >
-          <div className="py-2 space-y-0.5 border-t border-reform-primary/10 dark:border-white/10 px-2">
-            {[
-              { href: '/join', text: 'Join' },
-              { href: '/about', text: 'About' },
-              { href: '/events', text: 'Events' }
-            ].map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-4 text-base font-medium rounded-lg transition-all duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.text}
-              </Link>
-            ))}
-            
-            <div className="px-4 py-2">
-              <div className="text-reform-dark dark:text-white text-base font-medium mb-1">Areas</div>
+          <div className="py-4 space-y-1 border-t border-reform-primary/10 dark:border-white/10 px-2">
+            <Link
+              href="/join"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Join
+            </Link>
+
+            <div className="px-4 py-3">
+              <div className="text-reform-dark dark:text-white text-base font-medium mb-2">News</div>
               <div className="space-y-1 pl-4">
-                {areas.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-3.5 px-3 text-base rounded-lg transition-all duration-200"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.text}
-                  </Link>
-                ))}
+                <Link
+                  href="/news/reform"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Reform News
+                </Link>
+                <Link
+                  href="/news/national"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  National
+                </Link>
+                <Link
+                  href="/news/local"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Local
+                </Link>
+                <Link
+                  href="/news/crime-and-court"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Crime & Courts
+                </Link>
               </div>
             </div>
 
-            <div className="px-4 py-2">
-              <div className="text-reform-dark dark:text-white text-base font-medium mb-1">Our Plan</div>
+            <div className="px-4 py-3">
+              <div className="text-reform-dark dark:text-white text-base font-medium mb-2">Areas</div>
+              <div className="space-y-1 pl-4">
+                <Link
+                  href="/areas/erdington"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Erdington
+                </Link>
+                <Link
+                  href="/areas/kingstanding"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Kingstanding
+                </Link>
+                <Link
+                  href="/areas/stockland-green"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Stockland Green
+                </Link>
+                <Link
+                  href="/areas/pype-hayes"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Pype Hayes
+                </Link>
+                <Link
+                  href="/areas/castle-vale"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Castle Vale
+                </Link>
+              </div>
+            </div>
+
+            <Link
+              href="/reformtv"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ReformTV
+            </Link>
+
+            <Link
+              href="/events"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Events
+            </Link>
+
+            <Link
+              href="/about"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              About
+            </Link>
+            
+            <div className="px-4 py-3">
+              <div className="text-reform-dark dark:text-white text-base font-medium mb-2">Our Plan</div>
               <div className="space-y-1 pl-4">
                 {[
                   { href: '/plan/cut-taxes', text: 'Cut Taxes' },
@@ -391,7 +454,7 @@ export default function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-3.5 px-3 text-base rounded-lg transition-all duration-200"
+                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.text}
@@ -400,31 +463,8 @@ export default function Navigation() {
               </div>
             </div>
 
-            <div className="px-4 py-2">
-              <div className="text-reform-dark dark:text-white text-base font-medium mb-1">News</div>
-              <div className="space-y-1 pl-4">
-                {newsItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-3.5 px-3 text-base rounded-lg transition-all duration-200"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.text}
-                  </Link>
-                ))}
-              </div>
-            </div>
 
-            <Link
-              href="/contact"
-              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-4 text-base font-medium rounded-lg transition-all duration-200"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Contact
-            </Link>
-
-            <div className="flex items-center justify-center space-x-8 px-4 py-6 border-t border-reform-primary/10 dark:border-white/10 mt-2 bg-reform-gray/5 dark:bg-reform-secondary/5">
+            <div className="flex space-x-6 px-4 py-4 border-t border-reform-primary/10 dark:border-white/10 mt-2">
               <a
                 href="https://www.facebook.com/groups/916932353577131"
                 target="_blank"
@@ -447,8 +487,6 @@ export default function Navigation() {
           </div>
         </div>
       </div>
-      </nav>
-      <NewsTicker />
-    </>
+    </nav>
   )
 }

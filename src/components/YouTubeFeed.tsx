@@ -17,6 +17,32 @@ interface VideoResponse {
   nextOffset: number;
 }
 
+// Generate video schema with additional metadata
+function generateVideoSchema(video: Video) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: video.title,
+    description: video.description,
+    thumbnailUrl: video.thumbnail,
+    uploadDate: video.published,
+    contentUrl: video.link,
+    embedUrl: video.link.replace('watch?v=', 'embed/'),
+    publisher: {
+      '@type': 'Organization',
+      name: 'Reform UK Erdington',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://reformukerdington.org/images/reformlogo.jpg'
+      }
+    },
+    author: {
+      '@type': 'Organization',
+      name: 'Reform UK Erdington'
+    }
+  };
+}
+
 export default function YouTubeFeed() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -106,9 +132,19 @@ export default function YouTubeFeed() {
             itemScope
             itemType="https://schema.org/VideoObject"
           >
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(generateVideoSchema(video))
+              }}
+            />
             <meta itemProp="uploadDate" content={video.published} />
             <meta itemProp="thumbnailUrl" content={video.thumbnail} />
             <meta itemProp="description" content={video.description} />
+            <meta itemProp="publisher" content="Reform UK Erdington" />
+            <meta itemProp="author" content="Reform UK Erdington" />
+            <meta itemProp="isFamilyFriendly" content="true" />
+            <meta itemProp="inLanguage" content="en-GB" />
             
             <a 
               href={video.link} 
@@ -144,6 +180,7 @@ export default function YouTubeFeed() {
                 {video.description}
               </p>
               <time 
+                dateTime={video.published}
                 className="text-gray-500 dark:text-gray-400 text-xs"
                 itemProp="datePublished"
               >

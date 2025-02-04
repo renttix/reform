@@ -14,12 +14,12 @@ module.exports = {
           secondary: '#004452',
           light: '#80dfe9',
           dark: '#003340',
-          gray: '#f5f5f5',
-        },
+          gray: '#f5f5f5'
+        }
       },
       fontFamily: {
         heading: ['var(--font-montserrat)', 'sans-serif'],
-        sans: ['var(--font-roboto)', 'sans-serif'],
+        sans: ['var(--font-roboto)', 'sans-serif']
       },
       keyframes: {
         shine: {
@@ -47,7 +47,7 @@ module.exports = {
       },
       boxShadow: {
         'logo': '0 25px 30px -12px rgba(0, 190, 214, 0.25), 0 18px 20px -15px rgba(0, 190, 214, 0.2)',
-        'logo-dark': '0 25px 30px -12px rgba(255, 255, 255, 0.25), 0 18px 20px -15px rgba(255, 255, 255, 0.2)',
+        'logo-dark': '0 25px 30px -12px rgba(255, 255, 255, 0.25), 0 18px 20px -15px rgba(255, 255, 255, 0.2)'
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -56,10 +56,10 @@ module.exports = {
             a: {
               color: theme('colors.reform.primary'),
               '&:hover': {
-                color: theme('colors.reform.light'),
-              },
-            },
-          },
+                color: theme('colors.reform.light')
+              }
+            }
+          }
         },
         dark: {
           css: {
@@ -67,8 +67,8 @@ module.exports = {
             a: {
               color: theme('colors.reform.light'),
               '&:hover': {
-                color: theme('colors.reform.primary'),
-              },
+                color: theme('colors.reform.primary')
+              }
             },
             h1: { color: theme('colors.white') },
             h2: { color: theme('colors.white') },
@@ -76,13 +76,13 @@ module.exports = {
             h4: { color: theme('colors.white') },
             strong: { color: theme('colors.white') },
             code: { color: theme('colors.white') },
-            blockquote: { color: theme('colors.gray.400') },
-          },
-        },
-      }),
-    },
+            blockquote: { color: theme('colors.gray.400') }
+          }
+        }
+      })
+    }
   },
   plugins: [
-    require('@tailwindcss/typography'),
-  ],
+    require('@tailwindcss/typography')
+  ]
 }

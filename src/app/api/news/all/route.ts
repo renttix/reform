@@ -22,14 +22,6 @@ const RSS_FEEDS = [
     source: 'BBC Politics'
   },
   {
-    url: 'https://www.itv.com/news/politics/rss',
-    source: 'ITV News Politics'
-  },
-  {
-    url: 'https://www.telegraph.co.uk/politics/rss.xml',
-    source: 'The Telegraph Politics'
-  },
-  {
     url: 'https://www.theguardian.com/politics/rss',
     source: 'The Guardian Politics'
   },
@@ -38,40 +30,16 @@ const RSS_FEEDS = [
     source: 'The Independent Politics'
   },
   {
-    url: 'https://www.express.co.uk/news/politics/rss',
-    source: 'Daily Express Politics'
-  },
-  {
-    url: 'https://www.dailymail.co.uk/news/politics/index.rss',
-    source: 'Daily Mail Politics'
-  },
-  {
-    url: 'https://www.thesun.co.uk/news/politics/feed/',
-    source: 'The Sun Politics'
-  },
-  {
     url: 'https://www.mirror.co.uk/news/politics/rss.xml',
     source: 'Daily Mirror Politics'
   },
-  {
-    url: 'https://www.standard.co.uk/news/politics/rss',
-    source: 'Evening Standard Politics'
-  },
   // Local News
   {
-    url: 'https://www.birminghammail.co.uk/news/local-news/rss.xml',
+    url: 'https://www.birminghammail.co.uk/?service=rss',
     source: 'Birmingham Mail'
   },
   {
-    url: 'https://www.birminghammail.co.uk/news/uk-news/rss.xml',
-    source: 'Birmingham Mail UK'
-  },
-  {
-    url: 'https://www.birminghammail.co.uk/news/midlands-news/rss.xml',
-    source: 'Birmingham Mail Midlands'
-  },
-  {
-    url: 'https://www.birminghamworld.uk/feed/rss',
+    url: 'https://www.birminghamworld.uk/rss',
     source: 'Birmingham World'
   }
 ]

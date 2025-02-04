@@ -2,11 +2,13 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
+import NewsTicker from '@/components/NewsTicker'
 import Footer from '@/components/Footer'
 import Providers from '@/components/Providers'
 import Script from 'next/script'
 import ScrollingBackground from '@/components/ScrollingBackground'
 import { generateOrganizationSchema } from '@/utils/structuredData'
+import BreadcrumbNav from '@/components/BreadcrumbNav'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -113,12 +115,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html 
-      lang="en" 
+    <html
+      lang="en"
       suppressHydrationWarning
-      className="scroll-smooth"
+      className="scroll-smooth light"
       itemScope
       itemType="https://schema.org/WebPage"
+      style={{ colorScheme: 'light' }}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -133,11 +136,24 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
-        <ScrollingBackground />
+      <body className={`${inter.className} antialiased bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300`}>
         <Providers>
-          <Navigation />
-          <main id="main-content" role="main" itemProp="mainContentOfPage">{children}</main>
+          <ScrollingBackground />
+          <div className="relative">
+            <Navigation />
+            <NewsTicker />
+            <BreadcrumbNav />
+            <main 
+              id="main-content" 
+              role="main" 
+              itemProp="mainContentOfPage" 
+              className="mt-40"
+            >
+              <div className="container mx-auto">
+                {children}
+              </div>
+            </main>
+          </div>
           <Footer />
         </Providers>
         

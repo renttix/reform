@@ -85,6 +85,11 @@ export default function Footer() {
                   Follow on X
                 </Link>
               </li>
+              <li>
+                <Link href="/contact" className="text-gray-400 hover:text-reform-primary transition-colors">
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -97,8 +102,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/reformtv" className="text-gray-400 hover:text-reform-primary transition-colors">
+                  ReformTV
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-gray-400 hover:text-reform-primary transition-colors">
-                  Our Contract
+                  Contact Us
                 </Link>
               </li>
             </ul>
