@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 interface NewsItem {
   id: string
   title: string
-  description: string
+  description: string | null
   link: string
   source: string
   imageUrl: string | null
@@ -22,12 +22,19 @@ interface PaginationInfo {
   totalPages: number
 }
 
+interface ApiResponse {
+  articles: NewsItem[]
+  pagination: PaginationInfo
+  error?: string
+}
+
 export default function ReformNewsGrid() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [newsItems, setNewsItems] = useState<NewsItem[]>([])
   const [pagination, setPagination] = useState<PaginationInfo>()
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [imageErrors, setImageErrors] = useState<{[key: string]: boolean}>({})
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '')
   const [sortOrder, setSortOrder] = useState(searchParams.get('sort') || 'desc')
@@ -37,6 +44,9 @@ export default function ReformNewsGrid() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        setIsLoading(true)
+        setError(null)
+
         const params = new URLSearchParams({
           page: currentPage.toString(),
           limit: '10',
@@ -45,11 +55,23 @@ export default function ReformNewsGrid() {
         })
 
         const response = await fetch(`/api/news/reform?${params}`)
-        const data = await response.json()
-        setNewsItems(data.articles)
-        setPagination(data.pagination)
+        const data: ApiResponse = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch news')
+        }
+
+        if (data.articles && Array.isArray(data.articles)) {
+          setNewsItems(data.articles)
+          setPagination(data.pagination)
+        } else {
+          throw new Error('Invalid response format')
+        }
       } catch (error) {
         console.error('Error fetching Reform UK news:', error)
+        setError(error instanceof Error ? error.message : 'Failed to fetch news')
+        setNewsItems([])
+        setPagination(undefined)
       } finally {
         setIsLoading(false)
       }
@@ -103,6 +125,22 @@ export default function ReformNewsGrid() {
             </div>
           </div>
         ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-lg text-red-600 dark:text-red-400 mb-4">
+          {error}
+        </p>
+        <button
+          onClick={() => router.refresh()}
+          className="px-4 py-2 bg-reform-primary text-white rounded-lg hover:bg-reform-secondary transition-colors"
+        >
+          Try Again
+        </button>
       </div>
     )
   }

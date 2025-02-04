@@ -136,15 +136,12 @@ export async function GET(request: NextRequest) {
 
     // Store search query if provided
     if (search) {
-      const searchQuery = await prisma.searchQuery.create({
+      await prisma.searchQuery.create({
         data: {
           query: search,
         },
       })
     }
-
-    // Fetch and store latest news in background
-    fetchAndStoreNews().catch(console.error)
 
     // Query articles with pagination and search
     const where: Prisma.NewsArticleWhereInput = search ? {
@@ -154,6 +151,7 @@ export async function GET(request: NextRequest) {
       ],
     } : {}
 
+    // Get articles from database
     const [articles, total] = await Promise.all([
       prisma.newsArticle.findMany({
         where,
@@ -164,6 +162,32 @@ export async function GET(request: NextRequest) {
       prisma.newsArticle.count({ where }),
     ])
 
+    // If no articles in database, fetch and store them
+    if (total === 0) {
+      await fetchAndStoreNews()
+      // Query again after fetching
+      const [newArticles, newTotal] = await Promise.all([
+        prisma.newsArticle.findMany({
+          where,
+          orderBy: { pubDate: sort === 'asc' ? 'asc' : 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        prisma.newsArticle.count({ where }),
+      ])
+
+      return NextResponse.json({
+        articles: newArticles,
+        pagination: {
+          page,
+          limit,
+          total: newTotal,
+          totalPages: Math.ceil(newTotal / limit),
+        },
+      })
+    }
+
+    // Return existing articles
     return NextResponse.json({
       articles,
       pagination: {
@@ -176,7 +200,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error in /api/news/reform:', error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: 'Internal Server Error', articles: [], pagination: { page: 1, limit: 10, total: 0, totalPages: 0 } },
       { status: 500 }
     )
   }
