@@ -11,6 +11,9 @@ import type { Metadata, Viewport } from 'next'
 export const metadata: Metadata = {
   title: 'Reform UK Erdington',
   description: 'Reform UK Erdington - Making real change across Erdington, Castle Vale, Pype Hayes, Stockland Green, and Kingstanding.',
+  verification: {
+    google: 'Y6VrNoJB-CeyOgyDHIi-h-44uT2yctGG52souyU_jWk',
+  },
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
