@@ -7,7 +7,7 @@ export function generateOrganizationSchema() {
     url: 'https://reform-uk-erdington.vercel.app',
     logo: 'https://reform-uk-erdington.vercel.app/images/reformlogo.svg',
     sameAs: [
-      'https://facebook.com/groups/reformukerdington',
+      'https://www.facebook.com/groups/916932353577131',
       'https://x.com/reformukerdington',
     ],
     address: {

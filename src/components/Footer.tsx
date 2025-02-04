@@ -20,7 +20,7 @@ export default function Footer() {
                 </p>
                 <div className="text-center">
                   <Link 
-                    href="https://facebook.com/groups/reformukerdington"
+                    href="https://www.facebook.com/groups/916932353577131"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block bg-reform-primary hover:bg-reform-primary/90 text-white font-semibold px-8 py-3 rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,123,255,0.4)] hover:-translate-y-1 active:scale-95 active:translate-y-0"
@@ -76,7 +76,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="https://facebook.com/groups/reformukerdington" className="text-gray-400 hover:text-reform-primary transition-colors">
+                <Link href="https://www.facebook.com/groups/916932353577131" className="text-gray-400 hover:text-reform-primary transition-colors">
                   Facebook Group
                 </Link>
               </li>
