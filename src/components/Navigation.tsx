@@ -10,10 +10,6 @@ import { FaXTwitter } from 'react-icons/fa6'
 export default function Navigation() {
   const [mounted, setMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  const [isPlanOpen, setIsPlanOpen] = useState(false)
-  const [isNewsOpen, setIsNewsOpen] = useState(false)
-  const [isAreasOpen, setIsAreasOpen] = useState(false)
   const [isRollInComplete, setIsRollInComplete] = useState(false)
   const [mouthOpen, setMouthOpen] = useState(false)
   const { theme, setTheme } = useTheme()
@@ -49,36 +45,6 @@ export default function Navigation() {
     setCurrentTheme(newTheme)
     setTheme(newTheme)
   }
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      
-      // Check if click is outside all dropdowns
-      if (!target.closest('.dropdown-menu')) {
-        setIsPlanOpen(false);
-        setIsNewsOpen(false);
-        setIsAreasOpen(false);
-      }
-    };
-
-    // Handle escape key
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsPlanOpen(false);
-        setIsNewsOpen(false);
-        setIsAreasOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleEscKey);
-    
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscKey);
-    };
-  }, []);
 
   if (!mounted) {
     return null
@@ -127,19 +93,10 @@ export default function Navigation() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <div className="relative group dropdown-menu">
-              <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setIsNewsOpen(false);
-                  setIsAreasOpen(false);
-                  setIsPlanOpen(!isPlanOpen);
-                }}
-              >
+              <div className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group">
                 Our Plan
                 <svg
-                  className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${isPlanOpen ? 'rotate-180' : ''}`}
+                  className="ml-1.5 h-4 w-4 transition-transform duration-300 group-hover:rotate-180"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -151,48 +108,37 @@ export default function Navigation() {
                   />
                 </svg>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-              </button>
-              <div 
-                className={`${
-                  isPlanOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute left-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
-              >
-                {[
-                  { href: '/plan/cut-taxes', text: 'Cut Taxes' },
-                  { href: '/plan/reform-nhs', text: 'Reform NHS' },
-                  { href: '/plan/control-immigration', text: 'Control Immigration' },
-                  { href: '/plan/fight-crime', text: 'Fight Crime' },
-                  { href: '/plan/drive-growth', text: 'Drive Growth' }
-                ].map((item, index) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`block px-6 py-3.5 text-base text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-all duration-200 ${
-                      index === 0 ? 'rounded-t-xl' : ''
-                    } ${
-                      index === 4 ? 'rounded-b-xl' : ''
-                    }`}
-                    onClick={() => setIsPlanOpen(false)}
-                  >
-                    {item.text}
-                  </Link>
-                ))}
+                <div className="absolute left-0 top-full pt-2 w-72 opacity-0 -translate-y-4 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out origin-top">
+                  <div className="bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden border border-reform-primary/10 dark:border-white/10">
+                    {[
+                      { href: '/plan/cut-taxes', text: 'Cut Taxes', icon: '💰' },
+                      { href: '/plan/reform-nhs', text: 'Reform NHS', icon: '🏥' },
+                      { href: '/plan/control-immigration', text: 'Control Immigration', icon: '🌍' },
+                      { href: '/plan/fight-crime', text: 'Fight Crime', icon: '⚖️' },
+                      { href: '/plan/drive-growth', text: 'Drive Growth', icon: '📈' }
+                    ].map((item, index) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`group flex items-center px-6 py-4 text-base text-reform-dark dark:text-white hover:bg-gradient-to-r hover:from-reform-primary hover:to-reform-primary/90 hover:text-white dark:hover:text-white transition-all duration-200 ${
+                          index === 0 ? 'rounded-t-xl' : ''
+                        } ${
+                          index === 4 ? 'rounded-b-xl' : ''
+                        }`}
+                      >
+                        <span className="mr-3 text-xl group-hover:scale-110 transition-transform duration-200">{item.icon}</span>
+                        <span className="font-medium">{item.text}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="relative group dropdown-menu">
-              <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setIsPlanOpen(false);
-                  setIsNewsOpen(false);
-                  setIsAreasOpen(!isAreasOpen);
-                }}
-              >
+              <div className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group">
                 Areas
                 <svg
-                  className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${isAreasOpen ? 'rotate-180' : ''}`}
+                  className="ml-1.5 h-4 w-4 transition-transform duration-300 group-hover:rotate-180"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -204,17 +150,30 @@ export default function Navigation() {
                   />
                 </svg>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-              </button>
-              <div 
-                className={`${
-                  isAreasOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute left-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
-              >
-                <Link href="/areas/erdington" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Erdington</Link>
-                <Link href="/areas/kingstanding" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Kingstanding</Link>
-                <Link href="/areas/stockland-green" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Stockland Green</Link>
-                <Link href="/areas/pype-hayes" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Pype Hayes</Link>
-                <Link href="/areas/castle-vale" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Castle Vale</Link>
+                <div className="absolute left-0 top-full pt-2 w-72 opacity-0 -translate-y-4 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out origin-top">
+                  <div className="bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden border border-reform-primary/10 dark:border-white/10">
+                    {[
+                      { href: '/areas/erdington', text: 'Erdington', icon: '🏛️' },
+                      { href: '/areas/kingstanding', text: 'Kingstanding', icon: '👑' },
+                      { href: '/areas/stockland-green', text: 'Stockland Green', icon: '🌳' },
+                      { href: '/areas/pype-hayes', text: 'Pype Hayes', icon: '🏡' },
+                      { href: '/areas/castle-vale', text: 'Castle Vale', icon: '🏰' }
+                    ].map((item, index) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`group flex items-center px-6 py-4 text-base text-reform-dark dark:text-white hover:bg-gradient-to-r hover:from-reform-primary hover:to-reform-primary/90 hover:text-white dark:hover:text-white transition-all duration-200 ${
+                          index === 0 ? 'rounded-t-xl' : ''
+                        } ${
+                          index === 4 ? 'rounded-b-xl' : ''
+                        }`}
+                      >
+                        <span className="mr-3 text-xl group-hover:scale-110 transition-transform duration-200">{item.icon}</span>
+                        <span className="font-medium">{item.text}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             <Link href="/reformtv" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
@@ -230,19 +189,10 @@ export default function Navigation() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
             </Link>
             <div className="relative group dropdown-menu">
-              <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setIsPlanOpen(false);
-                  setIsAreasOpen(false);
-                  setIsNewsOpen(!isNewsOpen);
-                }}
-              >
+              <div className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group">
                 News
                 <svg
-                  className={`ml-1.5 h-4 w-4 transition-transform duration-300 ${isNewsOpen ? 'rotate-180' : ''}`}
+                  className="ml-1.5 h-4 w-4 transition-transform duration-300 group-hover:rotate-180"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -254,16 +204,29 @@ export default function Navigation() {
                   />
                 </svg>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
-              </button>
-              <div 
-                className={`${
-                  isNewsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute right-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
-              >
-                <Link href="/news/reform" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Reform News</Link>
-                <Link href="/news/national" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">National</Link>
-                <Link href="/news/local" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Local</Link>
-                <Link href="/news/crime-and-court" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Crime & Courts</Link>
+                <div className="absolute right-0 top-full pt-2 w-72 opacity-0 -translate-y-4 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 ease-out origin-top">
+                  <div className="bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden border border-reform-primary/10 dark:border-white/10">
+                    {[
+                      { href: '/news/reform', text: 'Reform News', icon: '📰' },
+                      { href: '/news/national', text: 'National', icon: '🇬🇧' },
+                      { href: '/news/local', text: 'Local', icon: '📍' },
+                      { href: '/news/crime-and-court', text: 'Crime & Courts', icon: '⚖️' }
+                    ].map((item, index) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`group flex items-center px-6 py-4 text-base text-reform-dark dark:text-white hover:bg-gradient-to-r hover:from-reform-primary hover:to-reform-primary/90 hover:text-white dark:hover:text-white transition-all duration-200 ${
+                          index === 0 ? 'rounded-t-xl' : ''
+                        } ${
+                          index === 3 ? 'rounded-b-xl' : ''
+                        }`}
+                      >
+                        <span className="mr-3 text-xl group-hover:scale-110 transition-transform duration-200">{item.icon}</span>
+                        <span className="font-medium">{item.text}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex items-center space-x-6">
@@ -355,75 +318,45 @@ export default function Navigation() {
             <div className="px-4 py-3">
               <div className="text-reform-dark dark:text-white text-base font-medium mb-2">News</div>
               <div className="space-y-1 pl-4">
-                <Link
-                  href="/news/reform"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Reform News
-                </Link>
-                <Link
-                  href="/news/national"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  National
-                </Link>
-                <Link
-                  href="/news/local"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Local
-                </Link>
-                <Link
-                  href="/news/crime-and-court"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Crime & Courts
-                </Link>
+                {[
+                  { href: '/news/reform', text: 'Reform News', icon: '📰' },
+                  { href: '/news/national', text: 'National', icon: '🇬🇧' },
+                  { href: '/news/local', text: 'Local', icon: '📍' },
+                  { href: '/news/crime-and-court', text: 'Crime & Courts', icon: '⚖️' }
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex items-center text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="mr-3 text-xl">{item.icon}</span>
+                    <span>{item.text}</span>
+                  </Link>
+                ))}
               </div>
             </div>
 
             <div className="px-4 py-3">
               <div className="text-reform-dark dark:text-white text-base font-medium mb-2">Areas</div>
               <div className="space-y-1 pl-4">
-                <Link
-                  href="/areas/erdington"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Erdington
-                </Link>
-                <Link
-                  href="/areas/kingstanding"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Kingstanding
-                </Link>
-                <Link
-                  href="/areas/stockland-green"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Stockland Green
-                </Link>
-                <Link
-                  href="/areas/pype-hayes"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Pype Hayes
-                </Link>
-                <Link
-                  href="/areas/castle-vale"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Castle Vale
-                </Link>
+                {[
+                  { href: '/areas/erdington', text: 'Erdington', icon: '🏛️' },
+                  { href: '/areas/kingstanding', text: 'Kingstanding', icon: '👑' },
+                  { href: '/areas/stockland-green', text: 'Stockland Green', icon: '🌳' },
+                  { href: '/areas/pype-hayes', text: 'Pype Hayes', icon: '🏡' },
+                  { href: '/areas/castle-vale', text: 'Castle Vale', icon: '🏰' }
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex items-center text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="mr-3 text-xl">{item.icon}</span>
+                    <span>{item.text}</span>
+                  </Link>
+                ))}
               </div>
             </div>
 
@@ -455,19 +388,20 @@ export default function Navigation() {
               <div className="text-reform-dark dark:text-white text-base font-medium mb-2">Our Plan</div>
               <div className="space-y-1 pl-4">
                 {[
-                  { href: '/plan/cut-taxes', text: 'Cut Taxes' },
-                  { href: '/plan/reform-nhs', text: 'Reform NHS' },
-                  { href: '/plan/control-immigration', text: 'Control Immigration' },
-                  { href: '/plan/fight-crime', text: 'Fight Crime' },
-                  { href: '/plan/drive-growth', text: 'Drive Growth' }
+                  { href: '/plan/cut-taxes', text: 'Cut Taxes', icon: '💰' },
+                  { href: '/plan/reform-nhs', text: 'Reform NHS', icon: '🏥' },
+                  { href: '/plan/control-immigration', text: 'Control Immigration', icon: '🌍' },
+                  { href: '/plan/fight-crime', text: 'Fight Crime', icon: '⚖️' },
+                  { href: '/plan/drive-growth', text: 'Drive Growth', icon: '📈' }
                 ].map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                    className="flex items-center text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.text}
+                    <span className="mr-3 text-xl">{item.icon}</span>
+                    <span>{item.text}</span>
                   </Link>
                 ))}
               </div>
