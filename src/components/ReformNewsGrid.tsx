@@ -98,7 +98,8 @@ export default function ReformNewsGrid() {
                   alt="Reform UK Logo"
                   width={80}
                   height={80}
-                  className="opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+                  style={{ width: 'auto', height: 'auto' }}
+                  className="w-20 h-20 opacity-20 transition-opacity duration-300 group-hover:opacity-30"
                 />
               </div>
             )}
