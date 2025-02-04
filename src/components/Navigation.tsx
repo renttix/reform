@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { FaFacebook, FaXTwitter } from 'react-icons/fa6'
+import NewsTicker from './NewsTicker'
 
 export default function Navigation() {
   const [mounted, setMounted] = useState(false)
@@ -61,7 +62,8 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-reform-primary/10 dark:border-white/10">
+    <>
+      <nav className="sticky top-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-reform-primary/10 dark:border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16 md:h-28">
           <Link 
@@ -444,6 +446,8 @@ export default function Navigation() {
           </div>
         </div>
       </div>
-    </nav>
+      </nav>
+      <NewsTicker />
+    </>
   )
 }
