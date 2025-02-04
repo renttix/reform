@@ -87,12 +87,12 @@ export default function Navigation() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-gray-200 dark:border-white/10 backdrop-blur-sm">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-28">
+        <div className="flex justify-between items-center h-20 md:h-28">
           <Link 
             href="/" 
-            className="flex items-center space-x-6 group relative"
+            className="flex items-center space-x-2 md:space-x-6 group relative"
           >
-            <div className="relative w-[220px] h-[70px] bg-white dark:bg-reform-dark rounded-lg">
+            <div className="relative w-[40px] h-[40px] lg:w-[220px] lg:h-[70px] bg-white dark:bg-reform-dark rounded-lg">
               <div 
                 className={`absolute inset-0 ${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
                 style={{ 
@@ -114,14 +114,14 @@ export default function Navigation() {
                 />
               </div>
             </div>
-            <div className="flex flex-col -space-y-3">
-              <span className="text-[2.5rem] leading-[0.9] font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">ReformUK</span>
-              <span className="text-3xl font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">Erdington</span>
+            <div className="flex flex-col -space-y-1 lg:-space-y-3">
+              <span className="text-lg lg:text-[2.5rem] leading-[0.9] font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">ReformUK</span>
+              <span className="text-base lg:text-3xl font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">Erdington</span>
             </div>
           </Link>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             <Link href="/join" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
               Join
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
@@ -296,7 +296,8 @@ export default function Navigation() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="flex items-center gap-2">
+            <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
@@ -325,21 +326,22 @@ export default function Navigation() {
                 )}
               </svg>
             </button>
+            </div>
           </div>
         </div>
 
         {/* Mobile menu overlay */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setIsMobileMenuOpen(false)} />
         )}
         
         {/* Mobile menu */}
         <div
           className={`${
             isMobileMenuOpen ? 'max-h-[80vh] opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4 pointer-events-none'
-          } md:hidden overflow-y-auto transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark border-t border-reform-primary/10 dark:border-white/10 relative z-50`}
+          } lg:hidden overflow-y-auto transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark border-t border-reform-primary/10 dark:border-white/10 relative z-50 rounded-b-lg shadow-lg`}
         >
-          <div className="py-4 space-y-1 border-t border-reform-primary/10 dark:border-white/10 px-2">
+          <div className="py-4 space-y-1 px-2">
             <Link
               href="/join"
               className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"

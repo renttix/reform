@@ -96,7 +96,7 @@ export default function NewsTicker() {
   if (newsItems.length === 0) return null;
 
   return (
-    <div className="fixed top-28 left-0 right-0 z-40 bg-white/80 dark:bg-reform-dark/50 border-y border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
+    <div className="fixed top-20 md:top-28 left-0 right-0 z-40 bg-white/80 dark:bg-reform-dark/50 border-y border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
       <div className="container mx-auto">
         <div
           className="relative overflow-hidden h-10"
