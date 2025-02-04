@@ -10,42 +10,12 @@ interface NewsItem {
   timestamp: string
 }
 
-// Default news items to show when no live news is available
-const DEFAULT_NEWS_ITEMS: NewsItem[] = [
-  {
-    title: "Reform UK's Plan for Economic Growth",
-    link: "https://reform.uk/policies/economy",
-    source: "Reform UK",
-    timestamp: new Date().toLocaleDateString()
-  },
-  {
-    title: "Reform UK Erdington - Fighting for Local Change",
-    link: "/about",
-    source: "Reform UK Erdington",
-    timestamp: new Date().toLocaleDateString()
-  },
-  {
-    title: "Join Reform UK's Campaign for a Better Britain",
-    link: "/join",
-    source: "Reform UK",
-    timestamp: new Date().toLocaleDateString()
-  },
-  {
-    title: "Reform UK's Vision for the NHS",
-    link: "/plan/reform-nhs",
-    source: "Reform UK",
-    timestamp: new Date().toLocaleDateString()
-  },
-  {
-    title: "Immigration Policy - Taking Back Control",
-    link: "/plan/control-immigration",
-    source: "Reform UK",
-    timestamp: new Date().toLocaleDateString()
-  }
-]
-
 const KEYWORDS = [
   'Reform UK',
+  'Reform Party',
+  'Richard Tice',
+  'Nigel Farage',
+  'Ben Habib',
   'Reform UK party',
   'Reform UK news',
   'Reform UK updates',
@@ -55,48 +25,22 @@ const KEYWORDS = [
   'Reform UK elections',
   'Reform UK candidates',
   'Reform UK members',
-  'Richard Tice Reform UK',
-  'Nigel Farage Reform UK',
-  'Ben Habib Reform UK',
-  'Anne Widdecombe Reform UK',
   'Reform UK leadership',
   'Reform UK general election',
   'Reform UK local elections',
   'Reform UK by-elections',
-  'Reform UK voting results',
-  'Reform UK voter base',
-  'Reform UK constituencies',
-  'Reform UK immigration policy',
-  'Reform UK tax policy',
-  'Reform UK NHS policy',
-  'Reform UK economic policy',
-  'Reform UK Brexit stance',
-  'Reform UK energy policy',
-  'Reform UK environmental policy',
-  'Reform UK controversy',
-  'Reform UK media coverage',
-  'Reform UK debates',
-  'Reform UK interviews',
-  'Reform UK political scandals',
+  'Reform UK voting',
+  'Reform UK immigration',
+  'Reform UK tax',
+  'Reform UK NHS',
+  'Reform UK economy',
+  'Reform UK Brexit',
   'Reform UK Birmingham',
-  'Reform UK Erdington',
-  'Reform UK London',
-  'Reform UK Scotland',
-  'Reform UK Wales',
-  'Reform UK supporters',
-  'Reform UK protests',
-  'Reform UK rallies',
-  'Reform UK public opinion',
-  'Reform UK social media trends',
-  '#ReformUK',
-  '#ReformUKParty',
-  '#RichardTice',
-  '#NigelFarage',
-  '#ReformUKElections'
+  'Reform UK Erdington'
 ].map(keyword => keyword.toLowerCase())
 
 export default function NewsTicker() {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>(DEFAULT_NEWS_ITEMS)
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([])
   const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
@@ -124,23 +68,22 @@ export default function NewsTicker() {
           return acc
         }, [])
 
-        const mappedItems = uniqueItems.map((item: any) => ({
-          title: item.title,
-          link: item.link,
-          source: item.source,
-          timestamp: new Date(item.pubDate).toLocaleDateString()
-        }))
+        // Map and sort by date
+        const mappedItems = uniqueItems
+          .map((item: any) => ({
+            title: item.title,
+            link: item.link,
+            source: item.source,
+            timestamp: new Date(item.pubDate).toLocaleDateString()
+          }))
+          .sort((a: any, b: any) => 
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+          )
+          .slice(0, 20) // Keep only the 20 most recent items
 
-        // Combine live news with default items if there aren't enough live items
-        const combinedItems = mappedItems.length >= 5 
-          ? mappedItems 
-          : [...mappedItems, ...DEFAULT_NEWS_ITEMS.slice(0, 5 - mappedItems.length)]
-
-        setNewsItems(combinedItems)
+        setNewsItems(mappedItems)
       } catch (error) {
         console.error('Error fetching news:', error)
-        // Keep showing default items on error
-        setNewsItems(DEFAULT_NEWS_ITEMS)
       }
     }
 
@@ -149,6 +92,8 @@ export default function NewsTicker() {
     const interval = setInterval(fetchNews, 5 * 60 * 1000)
     return () => clearInterval(interval)
   }, [])
+
+  if (newsItems.length === 0) return null
 
   return (
     <div className="bg-reform-primary/5 dark:bg-reform-dark/50 border-b border-reform-primary/10 dark:border-white/10">
@@ -167,8 +112,8 @@ export default function NewsTicker() {
               <Link
                 key={`${item.link}-${index}`}
                 href={item.link}
-                target={item.link.startsWith('http') ? '_blank' : undefined}
-                rel={item.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 px-6 text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-colors duration-200"
               >
                 <span className="font-semibold text-reform-primary dark:text-reform-light">{item.source}</span>
