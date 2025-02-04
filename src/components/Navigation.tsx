@@ -10,6 +10,7 @@ import { FaXTwitter } from 'react-icons/fa6'
 export default function Navigation() {
   const [mounted, setMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   const [isPlanOpen, setIsPlanOpen] = useState(false)
   const [isNewsOpen, setIsNewsOpen] = useState(false)
   const [isAreasOpen, setIsAreasOpen] = useState(false)
@@ -327,11 +328,16 @@ export default function Navigation() {
           </div>
         </div>
 
+        {/* Mobile menu overlay */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+        )}
+        
         {/* Mobile menu */}
         <div
           className={`${
-            isMobileMenuOpen ? 'max-h-[32rem] opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4'
-          } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark rounded-xl mt-2 border border-reform-primary/10 dark:border-white/10`}
+            isMobileMenuOpen ? 'max-h-[80vh] opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4 pointer-events-none'
+          } md:hidden overflow-y-auto transition-all duration-300 ease-in-out bg-white dark:bg-reform-dark border-t border-reform-primary/10 dark:border-white/10 relative z-50`}
         >
           <div className="py-4 space-y-1 border-t border-reform-primary/10 dark:border-white/10 px-2">
             <Link
