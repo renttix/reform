@@ -6,7 +6,10 @@ const nextConfig = {
       'i.ytimg.com',
       'img.youtube.com',
     ],
-  }
+  },
+  experimental: {
+    serverActions: true,
+  },
 }
 
 module.exports = nextConfig

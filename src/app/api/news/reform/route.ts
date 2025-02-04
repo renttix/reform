@@ -169,9 +169,6 @@ const SECONDARY_KEYWORDS = [
   "deficit"
 ].map(keyword => keyword.toLowerCase())
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 300; // Revalidate every 5 minutes
-
 let cachedArticles: any[] = []
 let lastFetchTime = 0
 const CACHE_DURATION = 15 * 60 * 1000 // 15 minutes
@@ -326,40 +323,36 @@ async function fetchAllArticles() {
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl;
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '12');
-    const search = searchParams.get('search')?.toLowerCase() || '';
-    const sort = searchParams.get('sort') || 'desc';
+    const searchParams = request.nextUrl.searchParams
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '12')
+    const search = searchParams.get('search')?.toLowerCase() || ''
+    const sort = searchParams.get('sort') || 'desc'
 
     // Fetch and filter articles
-    let articles = await fetchAllArticles();
+    let articles = await fetchAllArticles()
 
-    // Apply search filter if search term exists
+    // Apply search filter
     if (search) {
       articles = articles.filter(article =>
         article.title.toLowerCase().includes(search) ||
         article.description.toLowerCase().includes(search)
-      );
+      )
     }
 
     // Apply sorting
     articles = articles.sort((a, b) => {
-      const dateA = new Date(a.pubDate).getTime();
-      const dateB = new Date(b.pubDate).getTime();
-      return sort === 'asc' ? dateA - dateB : dateB - dateA;
-    });
+      const dateA = new Date(a.pubDate).getTime()
+      const dateB = new Date(b.pubDate).getTime()
+      return sort === 'asc' ? dateA - dateB : dateB - dateA
+    })
 
     // Apply pagination
-    const total = articles.length;
-    const totalPages = Math.ceil(total / limit);
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    const paginatedArticles = articles.slice(start, end);
-
-    // Set cache headers
-    const headers = new Headers();
-    headers.set('Cache-Control', 'public, s-maxage=300'); // Cache for 5 minutes
+    const total = articles.length
+    const totalPages = Math.ceil(total / limit)
+    const start = (page - 1) * limit
+    const end = start + limit
+    const paginatedArticles = articles.slice(start, end)
 
     return NextResponse.json({
       articles: paginatedArticles,
@@ -369,26 +362,21 @@ export async function GET(request: NextRequest) {
         total,
         totalPages,
       },
-    }, {
-      headers,
-      status: 200
-    });
+    })
   } catch (error) {
-    console.error('Error in /api/news/reform:', error);
-    return NextResponse.json({ 
-      error: 'Internal Server Error',
-      articles: [],
-      pagination: {
-        page: 1,
-        limit: 12,
-        total: 0,
-        totalPages: 0,
+    console.error('Error in /api/news/reform:', error)
+    return NextResponse.json(
+      { 
+        error: 'Internal Server Error',
+        articles: [],
+        pagination: {
+          page: 1,
+          limit: 12,
+          total: 0,
+          totalPages: 0,
+        },
       },
-    }, { 
-      status: 500,
-      headers: {
-        'Cache-Control': 'no-store'
-      }
-    });
+      { status: 500 }
+    )
   }
 }

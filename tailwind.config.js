@@ -2,72 +2,87 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}',
+    './src/context/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {
       colors: {
-        'reform-primary': '#00bed6',
-        'reform-secondary': '#0099b3',
-        'reform-light': '#33d6ea',
-        'reform-dark': '#1a1a1a',
-        'reform-gray': '#666666',
+        reform: {
+          primary: '#00bed6',
+          secondary: '#004452',
+          light: '#80dfe9',
+          dark: '#003340',
+          gray: '#f5f5f5'
+        }
       },
-      animation: {
-        'spin3d': 'spin3d 20s linear infinite',
-        'rollIn': 'rollIn 1.5s ease-out forwards',
-        'ticker': 'ticker 30s linear infinite',
+      fontFamily: {
+        heading: ['var(--font-montserrat)', 'sans-serif'],
+        sans: ['var(--font-roboto)', 'sans-serif']
       },
       keyframes: {
-        spin3d: {
-          '0%': { 
-            transform: 'perspective(1000px) rotateY(0deg)',
-            WebkitTransform: 'perspective(1000px) rotateY(0deg)'
-          },
-          '100%': { 
-            transform: 'perspective(1000px) rotateY(360deg)',
-            WebkitTransform: 'perspective(1000px) rotateY(360deg)'
-          },
+        shine: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' }
         },
         rollIn: {
-          '0%': { 
-            transform: 'translateX(-100%) rotate(-120deg)',
-            WebkitTransform: 'translateX(-100%) rotate(-120deg)',
-            opacity: '0'
-          },
-          '100%': { 
-            transform: 'translateX(0) rotate(0deg)',
-            WebkitTransform: 'translateX(0) rotate(0deg)',
-            opacity: '1'
-          },
+          '0%': { transform: 'translateX(-100%) rotateY(-180deg)', opacity: '0' },
+          '100%': { transform: 'translateX(0) rotateY(0deg)', opacity: '1' }
         },
-        ticker: {
-          '0%': { 
-            transform: 'translateX(0)',
-            WebkitTransform: 'translateX(0)'
-          },
-          '100%': { 
-            transform: 'translateX(-50%)',
-            WebkitTransform: 'translateX(-50%)'
-          },
+        spin3d: {
+          '0%': { transform: 'rotateY(0deg)' },
+          '100%': { transform: 'rotateY(360deg)' }
         },
+        expandWidth: {
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' }
+        }
+      },
+      animation: {
+        shine: 'shine 1s ease-in-out infinite',
+        rollIn: 'rollIn 0.6s ease-out',
+        spin3d: 'spin3d 2.5s linear infinite',
+        expandWidth: 'expandWidth 0.3s ease-out'
       },
       boxShadow: {
-        'logo': '0 0 15px rgba(0, 190, 214, 0.5)',
-        'logo-dark': '0 0 15px rgba(51, 214, 234, 0.5)',
+        'logo': '0 25px 30px -12px rgba(0, 190, 214, 0.25), 0 18px 20px -15px rgba(0, 190, 214, 0.2)',
+        'logo-dark': '0 25px 30px -12px rgba(255, 255, 255, 0.25), 0 18px 20px -15px rgba(255, 255, 255, 0.2)'
       },
-      transitionProperty: {
-        'width': 'width',
-        'spacing': 'margin, padding',
-      },
-      willChange: {
-        'transform': 'transform',
-        'opacity': 'opacity',
-        'colors': 'background-color, border-color, color, fill, stroke',
-      },
-    },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.reform.dark'),
+            a: {
+              color: theme('colors.reform.primary'),
+              '&:hover': {
+                color: theme('colors.reform.light')
+              }
+            }
+          }
+        },
+        dark: {
+          css: {
+            color: theme('colors.white'),
+            a: {
+              color: theme('colors.reform.light'),
+              '&:hover': {
+                color: theme('colors.reform.primary')
+              }
+            },
+            h1: { color: theme('colors.white') },
+            h2: { color: theme('colors.white') },
+            h3: { color: theme('colors.white') },
+            h4: { color: theme('colors.white') },
+            strong: { color: theme('colors.white') },
+            code: { color: theme('colors.white') },
+            blockquote: { color: theme('colors.gray.400') }
+          }
+        }
+      })
+    }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography')
+  ]
 }

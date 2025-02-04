@@ -2,7 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes fadeIn {
+@layer base {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 249, 250, 251;
+    --ticker-duration: 30s;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--background-start-rgb));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #15A1D1;
+    border-radius: 5px;
+  }
+
+  html.dark {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 17, 24, 39;
+    --background-end-rgb: 17, 24, 39;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply text-gray-900 bg-white transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply text-white bg-gray-900;
+  }
+
+  ::selection {
+    @apply bg-reform-primary/20;
+  }
+
+  .dark ::selection {
+    @apply bg-reform-primary/40;
+  }
+}
+
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -11,7 +61,7 @@
   }
 }
 
-@keyframes slideUp {
+@keyframes slide-up {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -22,78 +72,44 @@
   }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes shimmer {
+@keyframes ticker {
   0% {
-    background-position: -1000px 0;
+    transform: translateX(0);
   }
   100% {
-    background-position: 1000px 0;
+    transform: translateX(-100%);
   }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 1s ease-out forwards;
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
 }
 
-.animate-slideUp {
-  animation: slideUp 1s ease-out forwards;
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
 }
 
-.animate-slideInLeft {
-  animation: slideInLeft 1s ease-out forwards;
+.animate-ticker {
+  animation: ticker var(--ticker-duration) linear infinite;
 }
 
-.animate-slideInRight {
-  animation: slideInRight 1s ease-out forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  background-size: 1000px 100%;
-  animation: shimmer 3s infinite linear;
-}
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+/* Adjust ticker speed based on screen size */
+@media (max-width: 768px) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --ticker-duration: 15s;
   }
 }
 
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base styles */
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -102,4 +118,73 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Custom shadows */
+.shadow-glow {
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.2);
+}
+
+.shadow-glow:hover {
+  box-shadow: 0 0 35px rgba(0, 123, 255, 0.3);
+}
+
+/* Custom transitions */
+.transition-all-ease {
+  transition: all 0.3s ease-out;
+}
+
+/* News ticker hover effect */
+.news-ticker-hover {
+  transition: all 0.3s ease-out;
+}
+
+.news-ticker-hover:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+@keyframes rollIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) rotate(360deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+@keyframes rollBackAndForth {
+  0% {
+    transform: translateX(-15%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(0%) rotate(-180deg);
+  }
+  50% {
+    transform: translateX(15%) rotate(-360deg);
+  }
+  75% {
+    transform: translateX(0%) rotate(-540deg);
+  }
+  100% {
+    transform: translateX(-15%) rotate(-720deg);
+  }
+}
+
+.animate-rollIn {
+  animation: rollIn 1.5s cubic-bezier(0.6, 0.1, 0.3, 1) forwards;
+}
+
+.animate-spin3d {
+  animation: rollBackAndForth 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
