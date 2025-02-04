@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Parser from 'rss-parser'
+import fetch from 'node-fetch'
 import { prisma } from '@/lib/prisma'
 import { Prisma } from '@prisma/client'
 
@@ -81,30 +82,57 @@ const REFORM_KEYWORDS = [
   'Reform UK Brexit'
 ].map(keyword => keyword.toLowerCase())
 
+async function fetchRssFeed(url: string) {
+  try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 5000)
+
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Reform UK News Aggregator/1.0',
+      },
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeout)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const text = await response.text()
+    return await parser.parseString(text)
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error(`Timeout fetching RSS feed from ${url}`)
+    } else {
+      console.error(`Error fetching RSS feed from ${url}:`, error)
+    }
+    return null
+  }
+}
+
 async function fetchAndStoreNews() {
   try {
-    // Fetch all feeds in parallel with timeout
+    // Fetch all feeds in parallel
     const feedPromises = RSS_FEEDS.map(async ({ url, source }) => {
-      try {
-        const feed = await parser.parseURL(url)
-        return feed.items
-          .filter(item => {
-            const text = `${item.title} ${item.contentSnippet || item.description || ''}`.toLowerCase()
-            return REFORM_KEYWORDS.some(keyword => text.includes(keyword))
-          })
-          .map(item => ({
-            title: item.title || '',
-            description: item.contentSnippet || item.description || '',
-            content: item.content || '',
-            link: item.link || '',
-            source,
-            imageUrl: item.media?.$.url || item.enclosure?.url || null,
-            pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
-          }))
-      } catch (error) {
-        console.error(`Error fetching ${source} feed:`, error)
-        return []
-      }
+      const feed = await fetchRssFeed(url)
+      if (!feed || !feed.items) return []
+
+      return feed.items
+        .filter(item => {
+          const text = `${item.title} ${item.contentSnippet || item.description || ''}`.toLowerCase()
+          return REFORM_KEYWORDS.some(keyword => text.includes(keyword))
+        })
+        .map(item => ({
+          title: item.title || '',
+          description: item.contentSnippet || item.description || '',
+          content: item.content || '',
+          link: item.link || '',
+          source,
+          imageUrl: item.media?.$.url || item.enclosure?.url || null,
+          pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
+        }))
     })
 
     const feedResults = await Promise.all(feedPromises)
