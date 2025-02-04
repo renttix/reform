@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import NewsTicker from '@/components/NewsTicker'
 import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import Providers from '@/components/Providers'
 import type { Metadata, Viewport } from 'next'
 

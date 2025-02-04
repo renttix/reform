@@ -43,13 +43,6 @@ export default function Navigation() {
     setCurrentTheme(theme || 'light')
   }, [theme, mounted])
 
-  const toggleTheme = () => {
-    if (!mounted) return
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
-    setCurrentTheme(newTheme)
-    setTheme(newTheme)
-  }
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -80,26 +73,58 @@ export default function Navigation() {
     };
   }, []);
 
-  if (!mounted) {
-    return null
+  const toggleTheme = () => {
+    if (!mounted) return
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+    setCurrentTheme(newTheme)
+    setTheme(newTheme)
   }
+
+  // Return a loading state while mounting
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-gray-200 dark:border-white/10 backdrop-blur-sm">
+        <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+          <div className="flex justify-between items-center h-20 lg:h-28 2xl:h-32">
+            <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-10 w-40 rounded"></div>
+            <div className="hidden lg:flex space-x-8">
+              {[...Array(7)].map((_, i) => (
+                <div key={i} className="animate-pulse bg-gray-200 dark:bg-gray-700 h-6 w-20 rounded"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+    )
+  }
+
+  const linkBaseClasses = "relative text-lg xl:text-xl text-reform-dark dark:text-white font-medium transition-colors duration-300 group"
+  const linkHoverClasses = "hover:text-reform-primary dark:hover:text-reform-light"
+  const linkTransformClasses = "transform-gpu hover:-translate-y-1 hover:scale-110 transition-transform duration-300"
+  const underlineClasses = "absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-reform-dark shadow-lg border-b border-gray-200 dark:border-white/10 backdrop-blur-sm">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-20 lg:h-28">
+      <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12">
+        <div className="flex justify-between items-center h-20 lg:h-28 2xl:h-32">
           <Link 
             href="/" 
-            className="flex items-center space-x-2 lg:space-x-6 group relative"
+            className="flex items-center space-x-2 lg:space-x-6 group relative transform-gpu hover:scale-105 transition-transform duration-300"
           >
-            <div className="relative w-[40px] h-[40px] lg:w-[70px] lg:h-[70px] bg-white dark:bg-reform-dark rounded-lg">
+            <div className="relative w-[40px] h-[40px] lg:w-[70px] lg:h-[70px] xl:w-[80px] xl:h-[80px] bg-white dark:bg-reform-dark rounded-lg group-hover:shadow-logo dark:group-hover:shadow-logo-dark transition-shadow duration-300">
               <div 
                 className={`absolute inset-0 ${isRollInComplete ? 'animate-spin3d' : 'animate-rollIn'}`}
                 style={{ 
                   transformOrigin: 'center center',
+                  WebkitTransformOrigin: 'center center',
                   clipPath: mouthOpen ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(35% 0, 100% 0, 100% 100%, 35% 100%, 0 50%)',
+                  WebkitClipPath: mouthOpen ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' : 'polygon(35% 0, 100% 0, 100% 100%, 35% 100%, 0 50%)',
                   transition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  WebkitTransition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
                   transform: mouthOpen 
+                    ? 'rotate(0deg) scale(1)' 
+                    : 'rotate(-8deg) scale(0.95)',
+                  WebkitTransform: mouthOpen 
                     ? 'rotate(0deg) scale(1)' 
                     : 'rotate(-8deg) scale(0.95)',
                 }}
@@ -108,27 +133,27 @@ export default function Navigation() {
                   src="/images/reformlogo.jpg"
                   alt="ReformUK Logo"
                   fill
-                  sizes="(max-width: 1024px) 40px, 70px"
+                  sizes="(max-width: 1024px) 40px, (max-width: 1280px) 70px, 80px"
                   className="object-contain"
                   priority
                 />
               </div>
             </div>
             <div className="flex flex-col -space-y-1 lg:-space-y-2">
-              <span className="text-lg lg:text-[2.5rem] leading-[0.9] font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">ReformUK</span>
-              <span className="text-base lg:text-3xl font-bold bg-gradient-to-r from-reform-primary to-reform-light dark:from-white dark:to-reform-light bg-clip-text text-transparent transition-all duration-500 group-hover:scale-105">Erdington</span>
+              <span className="text-lg lg:text-[2.5rem] xl:text-[3rem] leading-[0.9] font-bold bg-gradient-to-r from-reform-primary to-reform-light bg-clip-text text-transparent transition-all duration-500 transform-gpu group-hover:scale-105">ReformUK</span>
+              <span className="text-base lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-reform-primary to-reform-light bg-clip-text text-transparent transition-all duration-500 transform-gpu group-hover:scale-105">Erdington</span>
             </div>
           </Link>
 
           {/* Desktop menu */}
-          <div className="hidden lg:flex items-center space-x-8">
-            <Link href="/join" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8 2xl:space-x-10">
+            <Link href="/join" className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses}`}>
               Join
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+              <span className={underlineClasses}></span>
             </Link>
             <div className="relative group dropdown-menu">
               <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
+                className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses} flex items-center`}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -150,12 +175,12 @@ export default function Navigation() {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+                <span className={underlineClasses}></span>
               </button>
               <div 
                 className={`${
                   isPlanOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute left-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+                } absolute left-0 mt-2 w-64 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform-gpu border border-reform-primary/10 dark:border-white/10`}
               >
                 {[
                   { href: '/plan/cut-taxes', text: 'Cut Taxes' },
@@ -167,7 +192,7 @@ export default function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`block px-6 py-3.5 text-base text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-all duration-200 ${
+                    className={`block px-6 py-3.5 text-base xl:text-lg text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200 ${
                       index === 0 ? 'rounded-t-xl' : ''
                     } ${
                       index === 4 ? 'rounded-b-xl' : ''
@@ -181,7 +206,7 @@ export default function Navigation() {
             </div>
             <div className="relative group dropdown-menu">
               <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
+                className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses} flex items-center`}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -203,35 +228,35 @@ export default function Navigation() {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+                <span className={underlineClasses}></span>
               </button>
               <div 
                 className={`${
                   isAreasOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute left-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+                } absolute left-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform-gpu border border-reform-primary/10 dark:border-white/10`}
               >
-                <Link href="/areas/erdington" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Erdington</Link>
-                <Link href="/areas/kingstanding" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Kingstanding</Link>
-                <Link href="/areas/stockland-green" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Stockland Green</Link>
-                <Link href="/areas/pype-hayes" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Pype Hayes</Link>
-                <Link href="/areas/castle-vale" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Castle Vale</Link>
+                <Link href="/areas/erdington" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Erdington</Link>
+                <Link href="/areas/kingstanding" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Kingstanding</Link>
+                <Link href="/areas/stockland-green" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Stockland Green</Link>
+                <Link href="/areas/pype-hayes" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Pype Hayes</Link>
+                <Link href="/areas/castle-vale" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Castle Vale</Link>
               </div>
             </div>
-            <Link href="/reformtv" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+            <Link href="/reformtv" className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses}`}>
               ReformTV
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+              <span className={underlineClasses}></span>
             </Link>
-            <Link href="/events" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+            <Link href="/events" className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses}`}>
               Events
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+              <span className={underlineClasses}></span>
             </Link>
-            <Link href="/about" className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium transition-all duration-300 hover:-translate-y-0.5 group">
+            <Link href="/about" className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses}`}>
               About
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+              <span className={underlineClasses}></span>
             </Link>
             <div className="relative group dropdown-menu">
               <button 
-                className="relative text-lg text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light font-medium flex items-center transition-all duration-300 hover:-translate-y-0.5 group"
+                className={`${linkBaseClasses} ${linkHoverClasses} ${linkTransformClasses} flex items-center`}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -253,17 +278,17 @@ export default function Navigation() {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-reform-primary dark:bg-reform-light transition-all duration-300 group-hover:w-full"></span>
+                <span className={underlineClasses}></span>
               </button>
               <div 
                 className={`${
                   isNewsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-                } absolute right-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform border border-reform-primary/10 dark:border-white/10`}
+                } absolute right-0 mt-2 w-48 bg-white dark:bg-reform-dark shadow-xl rounded-xl overflow-hidden transition-all duration-300 ease-out transform-gpu border border-reform-primary/10 dark:border-white/10`}
               >
-                <Link href="/news/reform" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Reform News</Link>
-                <Link href="/news/national" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">National</Link>
-                <Link href="/news/local" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Local</Link>
-                <Link href="/news/crime-and-court" className="block px-4 py-2 hover:bg-reform-primary/10 dark:hover:bg-reform-primary/20">Crime & Courts</Link>
+                <Link href="/news/reform" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Reform News</Link>
+                <Link href="/news/national" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">National</Link>
+                <Link href="/news/local" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Local</Link>
+                <Link href="/news/crime-and-court" className="block px-4 py-2 text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white transition-colors duration-200">Crime & Courts</Link>
               </div>
             </div>
             <div className="flex items-center space-x-6">
@@ -272,7 +297,7 @@ export default function Navigation() {
                   href="https://www.facebook.com/groups/916932353577131"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-colors duration-300 transform-gpu hover:-translate-y-1 hover:scale-110"
                   aria-label="Facebook"
                 >
                   <FaFacebook className="h-6 w-6" />
@@ -281,7 +306,7 @@ export default function Navigation() {
                   href="https://x.com/ReformErdington"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                  className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-colors duration-300 transform-gpu hover:-translate-y-1 hover:scale-110"
                   aria-label="X (Twitter)"
                 >
                   <FaXTwitter className="h-6 w-6" />
@@ -289,7 +314,7 @@ export default function Navigation() {
               </div>
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300 hover:-translate-y-1 hover:scale-110"
+                className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-colors duration-300 transform-gpu hover:-translate-y-1 hover:scale-110"
                 aria-label="Toggle theme"
               >
                 {mounted && (currentTheme === 'dark' ? '🌞' : '🌙')}
@@ -302,14 +327,14 @@ export default function Navigation() {
             <div className="lg:hidden flex items-center gap-2">
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-all duration-300"
+                className="p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10 transition-colors duration-300"
                 aria-label="Toggle theme"
               >
                 {mounted && (currentTheme === 'dark' ? '🌞' : '🌙')}
               </button>
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-all duration-300 p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10"
+                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light focus:outline-none transition-colors duration-300 p-2 rounded-lg bg-reform-gray/5 dark:bg-reform-secondary/5 hover:bg-reform-gray/10 dark:hover:bg-reform-secondary/10"
                 aria-label="Toggle mobile menu"
               >
                 <svg
@@ -346,7 +371,7 @@ export default function Navigation() {
           <div className="py-4 space-y-1 px-2">
             <Link
               href="/join"
-              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Join
@@ -357,28 +382,28 @@ export default function Navigation() {
               <div className="space-y-1 pl-4">
                 <Link
                   href="/news/reform"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Reform News
                 </Link>
                 <Link
                   href="/news/national"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   National
                 </Link>
                 <Link
                   href="/news/local"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Local
                 </Link>
                 <Link
                   href="/news/crime-and-court"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Crime & Courts
@@ -391,35 +416,35 @@ export default function Navigation() {
               <div className="space-y-1 pl-4">
                 <Link
                   href="/areas/erdington"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Erdington
                 </Link>
                 <Link
                   href="/areas/kingstanding"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Kingstanding
                 </Link>
                 <Link
                   href="/areas/stockland-green"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Stockland Green
                 </Link>
                 <Link
                   href="/areas/pype-hayes"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Pype Hayes
                 </Link>
                 <Link
                   href="/areas/castle-vale"
-                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                  className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Castle Vale
@@ -429,7 +454,7 @@ export default function Navigation() {
 
             <Link
               href="/reformtv"
-              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               ReformTV
@@ -437,7 +462,7 @@ export default function Navigation() {
 
             <Link
               href="/events"
-              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Events
@@ -445,7 +470,7 @@ export default function Navigation() {
 
             <Link
               href="/about"
-              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-all duration-200"
+              className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white px-4 py-3 text-base rounded-lg transition-colors duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
@@ -464,7 +489,7 @@ export default function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-all duration-200"
+                    className="block text-reform-dark dark:text-white hover:bg-reform-primary hover:text-white dark:hover:bg-reform-primary dark:hover:text-white py-2.5 px-3 text-base rounded-lg transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.text}
@@ -478,7 +503,7 @@ export default function Navigation() {
                 href="https://www.facebook.com/groups/916932353577131"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-200 hover:scale-110"
+                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-colors duration-200 transform-gpu hover:scale-110"
                 aria-label="Facebook"
               >
                 <FaFacebook className="h-6 w-6" />
@@ -487,7 +512,7 @@ export default function Navigation() {
                 href="https://x.com/ReformErdington"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-all duration-200 hover:scale-110"
+                className="text-reform-dark dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-colors duration-200 transform-gpu hover:scale-110"
                 aria-label="X (Twitter)"
               >
                 <FaXTwitter className="h-6 w-6" />

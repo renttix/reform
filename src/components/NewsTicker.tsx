@@ -96,10 +96,10 @@ export default function NewsTicker() {
   if (newsItems.length === 0) return null;
 
   return (
-    <div className="fixed top-20 md:top-28 left-0 right-0 z-40 bg-white/80 dark:bg-reform-dark/50 border-y border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
-      <div className="container mx-auto">
+    <div className="fixed h-10 top-[80px] lg:top-[112px] 2xl:top-[128px] left-0 right-0 z-40 bg-white/95 dark:bg-reform-dark/95 border-y border-gray-200 dark:border-white/10 backdrop-blur-sm shadow-sm">
+      <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-12 h-full">
         <div
-          className="relative overflow-hidden h-10"
+          className="relative overflow-hidden h-full"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -117,17 +117,17 @@ export default function NewsTicker() {
                 className="inline-flex items-center space-x-2 px-6 text-gray-800 dark:text-white hover:text-reform-primary dark:hover:text-reform-light transition-colors duration-200"
               >
                 <span className="font-semibold text-reform-primary dark:text-reform-light">{item.source}</span>
-                <span className="text-gray-400 dark:text-reform-light/60">|</span>
-                <span className="hover:underline">{item.title}</span>
-                <span className="text-sm text-gray-500 dark:text-reform-light/60">
+                <span className="text-gray-500 dark:text-reform-light/60">|</span>
+                <span className="text-gray-800 dark:text-white hover:underline">{item.title}</span>
+                <span className="text-sm text-gray-600 dark:text-reform-light/60">
                   {item.timestamp}
                 </span>
               </Link>
             ))}
           </div>
           {/* Gradient overlays for smooth edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/80 dark:from-reform-dark to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/80 dark:from-reform-dark to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/95 dark:from-reform-dark/95 to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/95 dark:from-reform-dark/95 to-transparent z-10"></div>
         </div>
       </div>
     </div>
