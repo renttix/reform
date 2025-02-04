@@ -11,6 +11,12 @@ const parser = new Parser({
       ['description', 'description'],
     ],
   },
+  timeout: 5000,
+  requestOptions: {
+    headers: {
+      'User-Agent': 'Reform UK News Aggregator/1.0',
+    },
+  },
 })
 
 // RSS feed URLs - Major UK News Sources
@@ -82,71 +88,53 @@ const REFORM_KEYWORDS = [
   'Reform UK Brexit'
 ].map(keyword => keyword.toLowerCase())
 
-async function fetchRssFeed(url: string) {
-  try {
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 5000)
-
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Reform UK News Aggregator/1.0',
-      },
-      signal: controller.signal,
-    })
-
-    clearTimeout(timeout)
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-
-    const text = await response.text()
-    return await parser.parseString(text)
-  } catch (error) {
-    if (error instanceof Error && error.name === 'AbortError') {
-      console.error(`Timeout fetching RSS feed from ${url}`)
-    } else {
-      console.error(`Error fetching RSS feed from ${url}:`, error)
-    }
-    return null
-  }
-}
-
 async function fetchAndStoreNews() {
   try {
     // Fetch all feeds in parallel
     const feedPromises = RSS_FEEDS.map(async ({ url, source }) => {
-      const feed = await fetchRssFeed(url)
-      if (!feed || !feed.items) return []
+      try {
+        const feed = await parser.parseURL(url)
+        if (!feed?.items?.length) return []
 
-      return feed.items
-        .filter(item => {
-          const text = `${item.title} ${item.contentSnippet || item.description || ''}`.toLowerCase()
-          return REFORM_KEYWORDS.some(keyword => text.includes(keyword))
-        })
-        .map(item => ({
-          title: item.title || '',
-          description: item.contentSnippet || item.description || '',
-          content: item.content || '',
-          link: item.link || '',
-          source,
-          imageUrl: item.media?.$.url || item.enclosure?.url || null,
-          pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
-        }))
+        return feed.items
+          .filter(item => {
+            const text = `${item.title} ${item.contentSnippet || item.description || ''}`.toLowerCase()
+            return REFORM_KEYWORDS.some(keyword => text.includes(keyword))
+          })
+          .map(item => ({
+            title: item.title || '',
+            description: item.contentSnippet || item.description || '',
+            content: item.content || '',
+            link: item.link || '',
+            source,
+            imageUrl: item.media?.$.url || item.enclosure?.url || null,
+            pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
+          }))
+      } catch (error) {
+        console.error(`Error fetching RSS feed from ${url}:`, error)
+        return []
+      }
     })
 
-    const feedResults = await Promise.all(feedPromises)
-    const allItems = feedResults.flat()
+    const feedResults = await Promise.allSettled(feedPromises)
+    const allItems = feedResults
+      .filter((result): result is PromiseFulfilledResult<any[]> => result.status === 'fulfilled')
+      .map(result => result.value)
+      .flat()
 
     // Store articles in database
-    for (const item of allItems) {
-      await prisma.newsArticle.upsert({
+    const storePromises = allItems.map(item =>
+      prisma.newsArticle.upsert({
         where: { link: item.link },
         update: item,
         create: item,
+      }).catch(error => {
+        console.error(`Error storing article ${item.link}:`, error)
+        return null
       })
-    }
+    )
 
+    await Promise.allSettled(storePromises)
     return allItems
   } catch (error) {
     console.error('Error in fetchAndStoreNews:', error)
@@ -164,11 +152,15 @@ export async function GET(request: NextRequest) {
 
     // Store search query if provided
     if (search) {
-      await prisma.searchQuery.create({
-        data: {
-          query: search,
-        },
-      })
+      try {
+        await prisma.searchQuery.create({
+          data: {
+            query: search,
+          },
+        })
+      } catch (error) {
+        console.error('Error storing search query:', error)
+      }
     }
 
     // Query articles with pagination and search
@@ -192,9 +184,21 @@ export async function GET(request: NextRequest) {
 
     // If no articles in database, fetch and store them
     if (total === 0) {
-      await fetchAndStoreNews()
+      const newArticles = await fetchAndStoreNews()
+      if (newArticles.length === 0) {
+        return NextResponse.json({
+          articles: [],
+          pagination: {
+            page: 1,
+            limit,
+            total: 0,
+            totalPages: 0,
+          },
+        })
+      }
+
       // Query again after fetching
-      const [newArticles, newTotal] = await Promise.all([
+      const [latestArticles, newTotal] = await Promise.all([
         prisma.newsArticle.findMany({
           where,
           orderBy: { pubDate: sort === 'asc' ? 'asc' : 'desc' },
@@ -205,7 +209,7 @@ export async function GET(request: NextRequest) {
       ])
 
       return NextResponse.json({
-        articles: newArticles,
+        articles: latestArticles,
         pagination: {
           page,
           limit,
