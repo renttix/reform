@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0"
-  }
+  },
   "engines": {
     "node": "18.x"
   },
