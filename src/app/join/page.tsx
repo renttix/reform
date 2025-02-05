@@ -40,6 +40,18 @@ export default function JoinPage() {
       bgColor: "bg-reform-primary",
     },
     {
+      title: "Donate",
+      description: "Support Reform UK Erdington Branch",
+      benefits: [
+        "Help local campaigns",
+        "Support our mission",
+        "Fund local initiatives",
+        "Make an impact",
+      ],
+      url: "https://donate.reformparty.uk/birmingham-erdington",
+      bgColor: "bg-reform-primary",
+    },
+    {
       title: "Under 25",
       description: "Special membership for young reformers",
       benefits: [
@@ -93,33 +105,33 @@ export default function JoinPage() {
       </section>
 
       {/* Membership Types */}
-      <section className="py-12">
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
             {membershipTypes.map((type: MembershipType, index: number) => (
               <a
                 key={index}
                 href={type.url}
                 target={type.isLocal ? undefined : "_blank"}
                 rel={type.isLocal ? undefined : "noopener noreferrer"}
-                className="block group"
+                className="block group relative before:absolute before:-inset-3 before:rounded-[28px] before:bg-reform-primary/30 dark:before:bg-reform-light/30 before:blur-2xl before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100"
               >
-                <div className={`${type.bgColor} text-white rounded-lg p-6 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:shadow-black/30`}>
+                <div className={`${type.bgColor} text-white rounded-xl p-8 h-full transform transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/0 before:via-white/10 before:to-white/0 before:translate-x-[-200%] group-hover:before:translate-x-[200%] before:transition-transform before:duration-1000 before:ease-in-out after:absolute after:inset-0 after:bg-gradient-to-b after:from-white/5 after:to-transparent after:opacity-0 group-hover:after:opacity-100 after:transition-opacity after:duration-500`}>
                   <div>
-                    <h3 className="text-2xl font-bold mb-3">{type.title}</h3>
-                    <p className="text-white/90 mb-4">{type.description}</p>
-                    <ul className="space-y-2 mb-6">
+                    <h3 className="text-3xl font-bold mb-4 group-hover:text-reform-light transition-colors duration-500 relative">{type.title}</h3>
+                    <p className="text-white/90 mb-8 text-lg leading-relaxed">{type.description}</p>
+                    <ul className="space-y-3 mb-8">
                       {type.benefits.map((benefit: string, i: number) => (
                         <li key={i} className="flex items-center text-white/90">
-                          <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 mr-3 flex-shrink-0 text-reform-light group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                           {benefit}
                         </li>
                       ))}
                     </ul>
-                    <div className="inline-flex items-center text-white group-hover:translate-x-1 transition-transform">
-                      <span className="mr-2">{type.isLocal ? 'Get Involved' : 'Join Now'}</span>
+                    <div className="inline-flex items-center text-white group-hover:translate-x-3 transition-transform duration-500">
+                      <span className="mr-3 text-lg font-semibold group-hover:text-reform-light transition-colors duration-300">{type.isLocal ? 'Get Involved' : type.title === "Donate" ? 'Donate Now' : 'Join Now'}</span>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>

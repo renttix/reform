@@ -230,6 +230,14 @@ export default function Navigation() {
               </div>
             </div>
             <div className="flex items-center space-x-6">
+              <a
+                href="https://donate.reformparty.uk/birmingham-erdington"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 bg-gradient-to-r from-reform-primary to-reform-primary/90 text-white rounded-lg font-medium hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-xl animate-pulse"
+              >
+                🤝 Donate
+              </a>
               <div className="flex items-center space-x-6 border-l border-reform-primary/10 dark:border-white/10 pl-8">
                 <a
                   href="https://www.facebook.com/groups/916932353577131"
@@ -407,6 +415,15 @@ export default function Navigation() {
               </div>
             </div>
 
+            <a
+              href="https://donate.reformparty.uk/birmingham-erdington"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-white bg-gradient-to-r from-reform-primary to-reform-primary/90 hover:scale-105 px-4 py-3 text-base rounded-lg transition-all duration-200 text-center font-medium mx-4 shadow-lg hover:shadow-xl animate-pulse"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              🤝 Donate
+            </a>
             <div className="flex space-x-6 px-4 py-4 border-t border-reform-primary/10 dark:border-white/10 mt-2">
               <a
                 href="https://www.facebook.com/groups/916932353577131"
