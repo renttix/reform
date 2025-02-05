@@ -1,58 +1,37 @@
 'use client'
 
+import { useState } from 'react'
+
 export default function DonateButton() {
+  const [isAnimating, setIsAnimating] = useState(false)
+
   const handleClick = () => {
-    const container = document.getElementById('pound-symbols');
-    if (container) {
-      const symbols = container.getElementsByClassName('pound-symbol');
-      Array.from(symbols).forEach((symbol, i) => {
-        const elem = symbol as HTMLElement;
-        elem.style.opacity = '1';
-        elem.style.animation = `fallAndFade 1s ease-out ${i * 50}ms`;
-        elem.style.left = `${Math.random() * 100}%`;
-      });
-      setTimeout(() => {
-        Array.from(symbols).forEach((symbol) => {
-          const elem = symbol as HTMLElement;
-          elem.style.opacity = '0';
-          elem.style.animation = 'none';
-        });
-      }, 2000);
-    }
-  };
+    setIsAnimating(true)
+    setTimeout(() => setIsAnimating(false), 1000)
+  }
 
   return (
-    <div className="relative" id="donation-container">
-      {/* Hidden pound symbols for the easter egg */}
-      <div className="hidden" id="pound-symbols">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-2xl text-reform-light font-bold opacity-0 transition-all duration-1000 pound-symbol"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: '-20px',
-              transform: 'translateX(-50%)',
-              animation: 'none'
-            }}
-          >
-            £
-          </div>
-        ))}
-      </div>
+    <div className="relative">
+      {/* Glow effect */}
+      <div 
+        className={`absolute inset-0 -z-10 bg-gradient-to-r from-reform-primary/40 to-reform-light/40 rounded-lg blur-3xl scale-110 transition-all duration-500 ${
+          isAnimating ? 'opacity-100 scale-125' : 'opacity-0 scale-110'
+        }`} 
+      />
+      {/* Button */}
       <a
         href="https://donate.reformparty.uk/birmingham-erdington"
         target="_blank"
         rel="noopener noreferrer"
-        className="btn bg-reform-light text-white dark:bg-reform-light dark:text-white hover:bg-reform-primary dark:hover:bg-reform-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:scale-105 relative overflow-hidden group w-full sm:w-auto text-center"
+        className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-reform-primary via-reform-light to-reform-primary text-white rounded-lg font-bold text-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-reform-primary/20 relative overflow-hidden group"
         onClick={handleClick}
       >
-        <span className="relative z-10 flex items-center justify-center">
-          <span className="mr-2">🤝</span>
+        <span className="relative z-10 flex items-center">
+          <span className="mr-3 text-2xl">🤝</span>
           Donate Now
         </span>
-        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
       </a>
     </div>
-  );
+  )
 }
