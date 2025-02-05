@@ -25,6 +25,7 @@
     "dotenv": "^16.4.7",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.0.4",
+    "canvas-confetti": "^1.9.0",
     "fast-xml-parser": "^4.5.1",
     "framer-motion": "^12.0.6",
     "glob": "^11.0.1",
