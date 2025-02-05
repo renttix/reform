@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getContent } from '@/utils/content'
 import NewsletterSignup from '@/components/NewsletterSignup'
 import SocialFeed from '@/components/SocialFeed'
+import AnimatedFAQ from '@/components/AnimatedFAQ'
 import type { Metadata } from 'next'
 import { FaFacebook, FaXTwitter } from 'react-icons/fa6'
 
@@ -165,6 +166,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <AnimatedFAQ />
 
       {/* Call to Action */}
       <section className="py-16 sm:py-20 md:py-24 bg-reform-dark text-white relative overflow-hidden">
