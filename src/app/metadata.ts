@@ -138,7 +138,7 @@ export function generateArticleSchema({
       url: `${metadataBase}/about`
     })),
     publisher: {
-      '@type': 'Organization',
+      '@type': 'Organisation',
       name: 'Reform UK Erdington',
       logo: {
         '@type': 'ImageObject',
@@ -188,7 +188,7 @@ export function generateEventSchema({
       }
     },
     organizer: {
-      '@type': 'Organization',
+      '@type': 'Organisation',
       name: 'Reform UK Erdington',
       url: metadataBase
     },
@@ -196,11 +196,11 @@ export function generateEventSchema({
   };
 }
 
-// Helper function to generate organization structured data
-export function generateOrganizationSchema() {
+// Helper function to generate organisation structured data
+export function generateOrganisationSchema() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'PoliticalOrganization',
+    '@type': 'PoliticalOrganisation',
     name: 'Reform UK Erdington',
     alternateName: 'Reform Party Erdington Branch',
     url: metadataBase,

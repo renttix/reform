@@ -66,7 +66,7 @@ A modern, SEO-optimized website for the ReformUK Erdington Branch built with Nex
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open your browser and navigate to the local host at [http://localhost:3000](http://localhost:3000).
 
 ## Configuration Helpers
 

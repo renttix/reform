@@ -43,7 +43,7 @@ export async function getReformEvents(): Promise<EventbriteEvent[]> {
 
   try {
     const response = await fetch(
-      `${BASE_URL}/organizations/${EVENTBRITE_ORGANIZATION_ID}/events?status=live&expand=venue`,
+      `${BASE_URL}/organisations/${EVENTBRITE_ORGANIZATION_ID}/events?status=live&expand=venue`,
       {
         headers: {
           'Authorization': `Bearer ${EVENTBRITE_API_KEY}`,
